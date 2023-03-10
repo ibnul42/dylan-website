@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import { NavLink } from "react-router-dom"
 
-function Header() {
-  const [open, setOpen] = useState(false)
+function Header({ open, setOpen }) {
   // const [activeId, setActiveId] = useState('/')
   const navLinkStyles = ({ isActive }) => {
     return {
@@ -17,7 +16,7 @@ function Header() {
   ]
   return (
     <div className="z-40 bg-primary text-white">
-      <div className="max-w-7xl mx-auto px-3 lg:px-0 flex justify-between py-2">
+      <div className="max-w-7xl mx-auto px-3 lg:px-0 flex justify-between py-5">
         <div className="flex items-center cursor-pointer">
           {/* <p className="font-bold text-2xl">Logo</p> */}
           {/* <img src="/assets/ui_logo.svg" className='h-10 w-10' alt="logo" /> */}
@@ -50,7 +49,7 @@ function Header() {
         <ul
           className={`flex flex-col md:flex-row items-start md:items-center pt-10 md:pt-0 justify-start md:justify-center absolute left-0 md:static w-3/4 h-screen md:h-auto md:w-auto transition-all duration-500 ease-in ${
             open
-              ? "opacity-100 top-[65px] bg-primary lg:bg-transparent"
+              ? "opacity-100 top-[65px] bg-primary lg:bg-transparent h-[calc(100vh-65px)]"
               : "opacity-0 md:opacity-100 top-[65px] left-[-500px]"
           } z-50`}
         >
