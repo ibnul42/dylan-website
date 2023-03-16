@@ -47,7 +47,7 @@ function Header({ open, setOpen }) {
           ></div>
         </div>
         <ul
-          className={`flex flex-col md:flex-row items-start md:items-center pt-10 md:pt-0 justify-start md:justify-center absolute left-0 md:static w-3/4 h-screen md:h-auto md:w-auto transition-all duration-500 ease-in ${
+          className={`flex flex-col gap-3 md:flex-row items-start md:items-center pt-10 md:pt-0 justify-start md:justify-center absolute left-0 md:static w-3/4 h-screen md:h-auto md:w-auto transition-all duration-500 ease-in ${
             open
               ? "opacity-100 top-[65px] bg-primary lg:bg-transparent h-[calc(100vh-65px)]"
               : "opacity-0 md:opacity-100 top-[65px] left-[-500px]"
@@ -63,9 +63,9 @@ function Header({ open, setOpen }) {
               >
                 {item.name}
               </NavLink>
-              {links.length !== index + 1 && (
-                <div className="border-t mx-3 w-3/4 md:hidden"></div>
-              )}
+              {/* {links.length !== index + 1 && ( */}
+                {/* <div className="border-t border-red-500 mx-3 w-3/4 md:hidden"></div> */}
+              {/* )} */}
             </div>
           ))}
         </ul>
