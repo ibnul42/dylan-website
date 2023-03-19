@@ -9,7 +9,7 @@ import Header from "./Header"
 const Layout = () => {
   const [open, setOpen] = useState(false);
   return (
-    <div className={`${open ? "h-screen overflow-y-hidden md:min-h-screen md:overflow-y-visible" : "min-h-screen"} flex flex-col justify-between text-gray-700`}>
+    <div className={`${open ? "h-screen overflow-y-hidden md:min-h-screen md:overflow-y-visible" : "min-h-screen"} overflow-x-hidden flex flex-col justify-between text-gray-700`}>
       <Header open={open} setOpen={setOpen} />
       <Routes>
       <Route path="/" element={<Home />} />
