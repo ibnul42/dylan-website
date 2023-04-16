@@ -36,7 +36,7 @@ const Photography = () => {
         <div className="my-2 grid gap-5 md:gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {listGroup && listGroup.length > 0 && listGroup.map((item, index) => (
             <div key={index} className="col-span-1 rounded-md overflow-hidden">
-              <Link to="/" className='w-full h-[75vh] max-h-96 flex justify-center'><img src={item.link} alt="" srcSet="" className='h-full w-full object-cover object-center' />
+              <Link to={`/photography/${item.title.toLocaleLowerCase()}`} className='w-full h-[75vh] max-h-96 flex justify-center'><img src={item.link} alt="" srcSet="" className='h-full w-full object-cover object-center' />
               </Link>
               <div className="flex justify-between items-center font-semibold my-2">
                 <p className='text-lg'>{item.title}</p>

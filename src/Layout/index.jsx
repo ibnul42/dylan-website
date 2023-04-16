@@ -5,6 +5,7 @@ import Photography from "../Pages/Photography";
 import About from "../Pages/About"
 import Footer from "./Footer"
 import Header from "./Header"
+import PhotographDetails from "../Pages/PhotographDetails";
 
 const Layout = () => {
   const [open, setOpen] = useState(false);
@@ -15,6 +16,7 @@ const Layout = () => {
       <Route path="/" element={<Home />} />
       <Route path="/photography" element={<Photography />} />
       <Route path="/about" element={<About />} />
+      <Route path="/photography/:type" element={<PhotographDetails />} />
       </Routes>
       <Footer />
     </div>
