@@ -3,7 +3,7 @@ import React from "react"
 const Footer = () => {
   return (
     <div className="bg-primary text-white py-3">
-      <div className="max-w-7xl mx-auto px-2 flex flex-col md:flex-row justify-between">
+      <div className="max-w-[1440px] mx-auto px-2 flex flex-col md:flex-row justify-between">
         <p className="md:py-2">With Love'22</p>
         <div className="flex justify-between md:justify-end gap-3 text-gray-400 py-2">
           <a href="mailto:dylanluper@tutanota.com" className="underline underline-offset-4 hover:decoration-dotted">Email</a>

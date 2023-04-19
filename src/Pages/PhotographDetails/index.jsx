@@ -241,7 +241,7 @@ const PhotographDetails = () => {
                 <title>{type.charAt(0).toUpperCase().concat(type.slice(1))}  - Dylan Luper</title>
                 <link rel="canonical" href="https://www.dylanluper.com/photography" />
             </Helmet>
-            <div className="max-w-7xl mx-auto px-2 gap-5 columns-1 md:columns-3">
+            <div className="max-w-[1440px] mx-auto px-2 gap-5 columns-1 md:columns-3">
                 {filteredImages.map((item, index) => (
                     <div key={index} className="mb-3">
                         <img src={item.source} className="w-full rounded-md object-cover" alt="" onClick={() => openModal(item, index)} />

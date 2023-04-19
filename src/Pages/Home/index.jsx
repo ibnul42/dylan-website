@@ -11,7 +11,7 @@ const Home = () => {
         <title>Home - Dylan Luper</title>
         <link rel="canonical" href="https://www.dylanluper.com" />
       </Helmet>
-      <div className="max-w-7xl mx-auto px-2 font-semibold">
+      <div className="max-w-[1440px] mx-auto px-2 font-semibold">
         <div className="my-2 flex flex-col items-center gap-3">
           <p className='text-center text-2xl md:text-4xl'>Dylan Luper</p>
           <div className="my-3">

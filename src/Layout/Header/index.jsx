@@ -16,7 +16,7 @@ function Header({ open, setOpen }) {
   ]
   return (
     <div className="z-40 bg-primary text-white">
-      <div className="max-w-7xl mx-auto px-3 lg:px-0 flex justify-between py-5">
+      <div className="max-w-[1440px] mx-auto px-3 lg:px-0 flex justify-between py-5">
         <div className="flex items-center cursor-pointer">
           {/* <p className="font-bold text-2xl">Logo</p> */}
           {/* <img src="/assets/ui_logo.svg" className='h-10 w-10' alt="logo" /> */}

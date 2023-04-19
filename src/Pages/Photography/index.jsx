@@ -32,7 +32,7 @@ const Photography = () => {
         <title>Photography - Dylan Luper</title>
         <link rel="canonical" href="https://www.dylanluper.com/photography" />
       </Helmet>
-      <div className="max-w-7xl mx-auto px-2 font-semibold">
+      <div className="max-w-[1440px] mx-auto px-2 font-semibold">
         <div className="my-2 grid gap-5 md:gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {listGroup && listGroup.length > 0 && listGroup.map((item, index) => (
             <div key={index} className="col-span-1 rounded-md overflow-hidden">

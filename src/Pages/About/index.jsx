@@ -8,7 +8,7 @@ const About = () => {
         <title>About - Dylan Luper</title>
         <link rel="canonical" href="https://www.dylanluper.com/about" />
       </Helmet>
-      <div className="max-w-7xl mx-auto px-2 grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="max-w-[1440px] mx-auto px-2 grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="col-span-1 flex flex-col gap-3 justify-center items-center">
           <p className='text-2xl md:text-4xl font-semibold'>What's Up!</p>
           <p className='max-w-md font-semibold text-gray-500 text-center'>I am a independent photographer/ videographer currently based out of Winston-Salem, NC.</p>
