@@ -238,7 +238,7 @@ const PhotographDetails = () => {
     return (
         <div className='flex-1 my-2'>
             <Helmet>
-                <title>{type.charAt(0).toUpperCase().concat(type.slice(1))}  - Dylan Luper</title>
+                <title>{type.charAt(0).toUpperCase().concat(type.slice(1))} - Dylan Luper</title>
                 <link rel="canonical" href="https://www.dylanluper.com/photography" />
             </Helmet>
             <div className="max-w-[1440px] mx-auto px-2 gap-5 columns-1 md:columns-3">

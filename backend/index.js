@@ -23,6 +23,21 @@ app.use("/api/events", require("./routes/eventRoutes"))
 app.use("/api/clients", require("./routes/clientRoutes"))
 app.use("/api/home", require("./routes/homeRoutes"))
 
+const fs = require("fs")
+app.get("/image", (req, res) => {
+  fs.readFile("assets/t2/transcript-1.jpg", (err, data) => {
+    if (err) {
+      res.writeHead(500, { "Content-Type": "text/plain" })
+      res.end("Error loading image")
+    } else {
+      // Set the content type header
+      res.setHeader("Content-Type", "image/jpeg")
+      // Send the image data as the response
+      res.end(data)
+    }
+  })
+})
+
 // server frontend
 // if (process.env.NODE_ENV === "production") {
 //   app.use(express.static(path.join(__dirname, "../frontend/dist")))
