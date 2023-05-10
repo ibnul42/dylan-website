@@ -18,10 +18,12 @@ import AdminContact from "../Pages/Admin/Contact"
 import CreateContact from "../Pages/Admin/Contact/CreateContact"
 import Prayer from "../Pages/Admin/Prayer"
 import Profile from "../Pages/Admin/Profile"
+import AdminPhotography from "../Pages/Admin/Photography"
 import Login from "../Pages/Login";
 
 const adminLinks = [
   { titile: "Profile", path: "/admin/profile" },
+  { titile: "Photography", path: "/admin/photography" },
   { titile: "Event", path: "/admin/event" },
   { titile: "Home", path: "/admin/home" },
   { titile: "Contact", path: "/admin/contact" },
@@ -90,19 +92,9 @@ const Layout = () => {
               >
                 Logout
               </Link>
-            {/* <div className="flex-grow flex flex-col justify-end">
-              <Link
-                className="bg-primary py-3 px-3 font-medium hover:bg-hover text-white"
-                to={"/login"}
-                onClick={onLogout}
-                state={{ logout: true }}
-              >
-                Logout
-              </Link>
-            </div> */}
           </div>
         )}
-        <div className={`${adminPanel ? "col-span-10 bg-white" : ""}`}>
+        <div className={`${adminPanel ? "col-span-10 bg-white text-black" : ""}`}>
           <Routes>
             <Route path="/" element={<Home />} />
             {/* <Route path="/contact" element={<Contact />} />
@@ -114,6 +106,7 @@ const Layout = () => {
             <Route path="/photography/:type" element={<PhotographDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/admin/profile" element={<Profile />} />
+            <Route path="/admin/photography" element={<AdminPhotography />} />
             <Route path="/admin/event" element={<AdminEvent />} />
             <Route path="/admin/contact" element={<AdminContact />} />
             <Route path="/admin/create-contact" element={<CreateContact />} />

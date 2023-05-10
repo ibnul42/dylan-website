@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { createDir, removeDir, addImages } = require('../controllers/assetController')
+const { createDir, removeDir, addImages, getDirectory, getImage, getAllImages } = require('../controllers/assetController')
 const { protect } = require('../middleware/authMiddleware')
 const multer  = require('multer')
 
@@ -17,6 +17,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 router.post('/dir', protect, createDir)
+router.get('/all-dir', protect, getDirectory)
+router.get("/all-images/:dir", getAllImages)
+router.get('/:dir/:name', getImage)
 router.delete('/rmdir/:dir', protect, removeDir)
 router.post('/upload/:assetDir', protect, upload.array('photos', 12), addImages)
 // router.post('/login', LoginUser)

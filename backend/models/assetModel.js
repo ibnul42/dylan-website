@@ -7,8 +7,8 @@ const assetSchema = mongoose.Schema({
     },
     id:{
         type: String,
-        required: [true, 'Please enter an id'],
-        unique: true
+        // required: [true, 'Please enter an id'],
+        // unique: true
     },
     type:{
         type: String,
