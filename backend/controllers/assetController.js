@@ -55,6 +55,28 @@ const removeDir = asyncHandler(async (req, res) => {
   }
 })
 
+const removeAsset = asyncHandler(async (req, res) => {
+  const folderName = `assets/${req.params.dir}`
+  const { dir, file } = req.params
+
+  try {
+    // Remove the file from disk
+    await fs.promises.unlink(`assets/${req.params.dir}/${req.params.file}`)
+
+    // Remove the corresponding document from the database
+    await Asset.findOneAndDelete({ title: file, type: dir })
+
+    res.status(200).json({ msg: "File deleted successfully" })
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      res.status(400).json({ msg: "File not found" })
+    } else {
+      console.error(err)
+      res.status(500).json({ msg: "Server error" })
+    }
+  }
+})
+
 const addImages = asyncHandler(async (req, res) => {
   const assetDir = req.params.assetDir
   for (const file of req.files) {
@@ -86,8 +108,9 @@ const getAllImages = asyncHandler(async (req, res) => {
 module.exports = {
   createDir,
   removeDir,
+  removeAsset,
   addImages,
   getDirectory,
   getImage,
-  getAllImages
+  getAllImages,
 }

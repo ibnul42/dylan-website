@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import { createFolder, getFolders, getImages, reset } from '../../../features/asset/assetSlice'
+import { addAssets, createFolder, getFolders, getImages, reset } from '../../../features/asset/assetSlice'
 
 const Photography = () => {
   const dispatch = useDispatch()
-  const { folders, assets, isError, message, isFolderCreated } = useSelector((state) => state.asset)
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  const { folders, assets, isError, message, isFolderCreated, isAssetAdded } = useSelector((state) => state.asset)
   const [currentType, setCurrentType] = useState(null)
 
   const [typeText, setTypeText] = useState('')
@@ -26,12 +28,15 @@ const Photography = () => {
     } else if (isError) {
       console.log("isError called")
       alert(message)
+    } else if(isAssetAdded) {
+      alert(message)
       dispatch(reset())
+      dispatch(getImages(currentType))
     } else {
       console.log("default called")
       dispatch(getFolders())
     }
-  }, [folders[0]?.name, isFolderCreated, isError])
+  }, [folders[0]?.name, isFolderCreated, isError, isAssetAdded])
 
   const onTypeChange = (item) => {
     setCurrentType(item.name)
@@ -48,6 +53,20 @@ const Photography = () => {
     dispatch(createFolder(typeText.trim()))
     // setCreateType(false)
   }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    // Create a new FormData object
+    const formData = new FormData();
+
+    // Append each selected file to the FormData object
+    for (let i = 0; i < selectedFiles.length; i++) {
+      formData.append(`photos`, selectedFiles[i]);
+    }    
+    dispatch(addAssets({ currentType, formData }))
+  }
+
   return (
     <div className='p-2 pr-6 flex flex-col h-full'>
       <div className="flex justify-between">
@@ -68,18 +87,26 @@ const Photography = () => {
               <button className='bg-red-600 hover:bg-red-700 text-stone-50 py-2 px-3 rounded' onClick={onTypeCancel}>Cancel</button>
               <button className='bg-green-700 hover:bg-green-800 text-stone-50 py-2 px-3 rounded' onClick={onTypeCreate}>Create</button>
             </div>
-          </div> : <div className="w-full flex gap-2 flex-wrap">
-            {assets
-              && assets.length > 0 ? assets.map((asset, index) => (
-                // <p>{asset.title}</p>
-                <div key={index} className="p-1 border h-32 w-32 flex justify-center items-center">
-                  <img className='max-h-full max-w-full' src={`http://localhost:5000/api${asset.source}`} alt={asset.title} />
-                </div>
-              )) :
-              <div className='w-full flex flex-col justify-center items-center gap-2'>
-                <p>No assets found</p>
-                <button className='border border-red-600 hover:bg-red-600 hover:text-white py-2 px-3 rounded'>Delete Folder</button>
-              </div>}
+          </div> : <div className="w-full flex flex-col gap-2">
+            <div className="flex gap-2 flex-wrap">
+              {assets
+                && assets.length > 0 ? assets.map((asset, index) => (
+                  <div key={index} className="p-1 border h-32 w-32 flex justify-center items-center relative">
+                    <img className='max-h-full max-w-full' src={`http://localhost:5000/api${asset.source}`} alt={asset.title} />
+                    <div className="absolute h-full w-full opacity-0 hover:opacity-100 flex justify-center items-center">
+                      <button>del</button>
+                    </div>
+                  </div>
+                )) :
+                <div className='w-full flex flex-col justify-center items-center gap-2'>
+                  <p>No assets found</p>
+                  <button className='border border-red-600 hover:bg-red-600 hover:text-white py-2 px-3 rounded'>Delete Folder</button>
+                </div>}
+            </div>
+            <form className='w-full' onSubmit={handleSubmit}>
+              <input type="file" multiple onChange={(event) => setSelectedFiles(event.target.files)} />
+              <button type="submit">Upload</button>
+            </form>
           </div>
         }
       </div>

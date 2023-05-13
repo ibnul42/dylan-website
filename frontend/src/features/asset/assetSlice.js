@@ -10,6 +10,7 @@ const initialState = {
     isFolderGet: false,
     isFolderCreated: false,
     isAssetget: false,
+    isAssetAdded: false,
     message: '',
     folders: [],
     assets: []
@@ -47,6 +48,17 @@ export const getImages = createAsyncThunk('asset/all-images', async(type, thunkA
     }
 })
 
+// add images
+export const addAssets = createAsyncThunk('asset/add-assets', async(data, thunkAPI) => {
+    try {
+        // console.log(inputText)
+        return await assetService.addAssets(data)
+    } catch (error) {
+        const message = error.response && error.response.data && error.response.data.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 export const assetSlice = createSlice({
     name: 'asset',
     initialState,
@@ -56,6 +68,7 @@ export const assetSlice = createSlice({
             state.isError = false
             state.isSuccess = false
             state.isFolderCreated = false
+            state.isAssetAdded = false
             state.message = ''
         }
     },
@@ -96,6 +109,21 @@ export const assetSlice = createSlice({
                 state.assets = action.payload
             })
             .addCase(getImages.rejected, (state, action) => {
+                 state.isLoading = false
+                 state.isError = true
+                 state.message = action.payload
+            })
+            
+            .addCase(addAssets.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(addAssets.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.isAssetAdded = true
+                state.message = action.payload.msg
+            })
+            .addCase(addAssets.rejected, (state, action) => {
                  state.isLoading = false
                  state.isError = true
                  state.message = action.payload
