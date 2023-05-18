@@ -114,7 +114,9 @@ const Photography = () => {
                   <div key={index} className="p-1 border h-32 w-32 flex justify-center items-center relative">
                     <img className='max-h-full max-w-full' src={`http://localhost:5000/api${asset.source}`} alt={asset.title} />
                     <div className="absolute h-full w-full opacity-0 hover:opacity-100 backdrop-blur-sm flex justify-center items-center">
-                      <button onClick={() => onDeleteImage(asset)}>del</button>
+                      <button onClick={() => onDeleteImage(asset)}>
+                        <img src="/assets/delete.svg" className='h-10 w-10' alt="" />
+                      </button>
                     </div>
                   </div>
                 )) :

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
-import Modal from './Modal';
+import Modal from './Modal'
+import config from '../../../config'
 
 const images = [
     {
@@ -187,16 +188,21 @@ const images = [
 ]
 
 import cloudinary from 'cloudinary-core';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAssets } from '../../features/asset/assetSlice';
 
 // const cl = new cloudinary.Cloudinary({cloud_name: 'ibnulashir'});
 
 const PhotographDetails = () => {
+    const dispatch = useDispatch()
     const { type } = useParams()
     const [filteredImages, setFilteredImages] = useState([])
     const [selectedImage, setSelectedImage] = useState(0)
     const [selectedIndex, setSelectedIndex] = useState(0)
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const { assets } = useSelector((state) => state.asset)
 
     const openModal = (item, index) => {
         setSelectedImage(item)
@@ -222,6 +228,7 @@ const PhotographDetails = () => {
     }
 
     const closeModal = () => {
+        console.log(1234)
         setIsModalOpen(false);
     };
 
@@ -229,12 +236,13 @@ const PhotographDetails = () => {
         setFilteredImages(images.filter((item) => item.type.toLocaleLowerCase() === type.toLocaleLowerCase()))
     }, [])
 
-    // cl.search({expression: 'folder_name/*', resource_type: 'image'}, (error, result) => {
-    //     if (result && result.resources) {
-    //       const images = result.resources.map(image => cl.url(image.public_id));
-    //       console.log(images); // Array of image URLs
-    //     }
-    //   });
+    useEffect(() => {
+        if (assets.length > 0) {
+            setFilteredImages(assets.filter((item) => item.type.toLocaleLowerCase() === type.toLocaleLowerCase()))
+        } else {
+            dispatch(getAssets())
+        }
+    }, [assets[0]?.title])
     return (
         <div className='flex-1 my-2'>
             <Helmet>
@@ -244,11 +252,11 @@ const PhotographDetails = () => {
             <div className="max-w-[1440px] mx-auto px-2 gap-5 columns-1 md:columns-3">
                 {filteredImages.map((item, index) => (
                     <div key={index} className="mb-3">
-                        <img src={item.source} className="w-full rounded-md object-cover" alt="" onClick={() => openModal(item, index)} />
-                        <Modal isOpen={isModalOpen} onClose={closeModal}>
+                        <img src={config.domainUrl + item.source} className="w-full rounded-md object-cover" alt="" onClick={() => openModal(item, index)} />
+                        <Modal isOpen={isModalOpen} closeModal={closeModal}>
                             <div className="flex flex-col gap-3 items-center">
                                 <div className=" relative flex justify-center text-white">
-                                    <img src={selectedImage?.source} className="w-4/5 self-center" alt="" />
+                                    <img src={config.domainUrl + selectedImage?.source} className="min-w-[24vw] min-h-[24vh] w-4/5 max-h-[95vh] self-center" alt="" />
                                     <div className="absolute top-0 left-0 h-full flex flex-col justify-center items-center text-3xl">
                                         <button className='' onClick={() => buttonHandler('left')}>{`<`}</button>
                                     </div>
@@ -259,7 +267,7 @@ const PhotographDetails = () => {
                                 <div className="flex gap-1 justify-center text-white">
                                     <div className="flex">
                                         {filteredImages.map((item, index) => (
-                                            <img key={index} src={item.source} className={`h-16 md:h-16 w-16 md:w-16 cursor-pointer object-cover ${selectedImage.id == item.id ? 'opacity-100' : 'opacity-10'}`} alt={item.title} onClick={() => customImageChangeHandler(item)} />
+                                            <img key={index} src={config.domainUrl + item.source} className={`h-16 md:h-16 w-16 md:w-16 cursor-pointer object-cover ${selectedImage.id == item.id ? 'opacity-100' : 'opacity-10'}`} alt={item.title} onClick={() => customImageChangeHandler(item)} />
                                         ))}
                                     </div>
                                 </div>

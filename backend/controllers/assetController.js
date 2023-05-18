@@ -33,10 +33,9 @@ const getDirectory = asyncHandler(async (req, res) => {
   res.status(200).send(dir)
 })
 
-const getAllAsset = asyncHandler(async (req, res) => {
-  const { dir } = req.params
-  // const assets = await Asset.find({ type: dir })
-  res.status(200).send("assets")
+const getAllAssets = asyncHandler(async (req, res) => {
+  const assets = await Asset.find()
+  res.status(200).send(assets)
 })
 
 const removeDir = asyncHandler(async (req, res) => {
@@ -114,4 +113,5 @@ module.exports = {
   getDirectory,
   getImage,
   getAllImages,
+  getAllAssets,
 }

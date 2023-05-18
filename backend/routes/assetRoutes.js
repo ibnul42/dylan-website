@@ -8,6 +8,7 @@ const {
   getImage,
   getAllImages,
   removeAsset,
+  getAllAssets,
 } = require("../controllers/assetController")
 const { protect } = require("../middleware/authMiddleware")
 const multer = require("multer")
@@ -27,6 +28,7 @@ const upload = multer({ storage: storage })
 router.post("/dir", protect, createDir)
 router.get("/all-dir", getDirectory)
 router.get("/all-images/:dir", getAllImages)
+router.get("/all-assets", getAllAssets)
 router.get("/:dir/:name", getImage)
 router.delete("/rmdir/:dir", protect, removeDir)
 router.delete("/rmFile/:dir/:file", protect, removeAsset)

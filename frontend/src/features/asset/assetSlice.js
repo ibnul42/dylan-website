@@ -83,6 +83,17 @@ export const removeFolder = createAsyncThunk('asset/remove-folder', async(dir, t
     }
 })
 
+// get all assets
+export const getAssets = createAsyncThunk('asset/all-assets', async( thunkAPI) => {
+    try {
+        // console.log(inputText)
+        return await assetService.getAssets()
+    } catch (error) {
+        const message = error.response && error.response.data && error.response.data.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 export const assetSlice = createSlice({
     name: 'asset',
     initialState,
@@ -137,7 +148,20 @@ export const assetSlice = createSlice({
                  state.isLoading = false
                  state.isError = true
                  state.message = action.payload
-            })            
+            })  
+            .addCase(getAssets.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getAssets.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.assets = action.payload
+            })
+            .addCase(getAssets.rejected, (state, action) => {
+                 state.isLoading = false
+                 state.isError = true
+                 state.message = action.payload
+            })           
             .addCase(addAssets.pending, (state) => {
                 state.isLoading = true
             })
