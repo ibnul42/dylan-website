@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { addAssets, createFolder, getFolders, getImages, removeAsset, removeFolder, reset } from '../../../features/asset/assetSlice'
+import { toast } from 'react-toastify'
 
 const Photography = () => {
   const dispatch = useDispatch()
@@ -27,17 +28,20 @@ const Photography = () => {
       dispatch(getFolders())
     } else if (isError) {
       console.log("isError called")
-      alert(message)
+      toast.error(message)
     } else if (isAssetAdded) {
-      alert(message)
+      toast.success(message)
+      // alert(message)
       dispatch(reset())
       dispatch(getImages(currentType))
     } else if (isAssetDeleted) {
-      alert(message)
+      toast.success(message)
+      // alert(message)
       dispatch(reset())
       dispatch(getImages(currentType))
     } else if (isFolderDeleted) {
-      alert(message)
+      toast.success(message)
+      // alert(message)
       dispatch(reset())
       dispatch(getFolders())
     } else {
@@ -84,7 +88,7 @@ const Photography = () => {
   }
 
   const onDeleteFolder = () => {
-    dispatch(removeFolder({dir: currentType}))
+    dispatch(removeFolder({ dir: currentType }))
   }
 
   return (
@@ -122,7 +126,7 @@ const Photography = () => {
                 )) :
                 <div className='w-full flex flex-col justify-center items-center gap-2'>
                   <p>No assets found</p>
-                  <button onClick={onDeleteFolder} className='border border-red-600 hover:bg-red-600 hover:text-white py-2 px-3 rounded'>Delete Folder</button>
+                  {folders.length > 0 && <button onClick={onDeleteFolder} className='border border-red-600 hover:bg-red-600 hover:text-white py-2 px-3 rounded'>Delete Folder</button>}
                 </div>}
             </div>
             <form className='w-full' onSubmit={handleSubmit}>

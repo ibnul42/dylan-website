@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import Layout from './Layout'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <Layout />
+    <>
+      <Layout />
+      <ToastContainer />
+    </>
   )
 }
 

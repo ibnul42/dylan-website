@@ -16,12 +16,8 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-// app.use('/api/goal', require("./routes/goalRoutes"))
 app.use("/api/users", require("./routes/userRoutes"))
 app.use("/api/assets", require("./routes/assetRoutes"))
-app.use("/api/events", require("./routes/eventRoutes"))
-app.use("/api/clients", require("./routes/clientRoutes"))
-app.use("/api/home", require("./routes/homeRoutes"))
 
 const fs = require("fs")
 // app.get("/image", (req, res) => {
