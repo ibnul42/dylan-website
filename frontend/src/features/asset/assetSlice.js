@@ -9,8 +9,10 @@ const initialState = {
     isSuccess: false,
     isFolderGet: false,
     isFolderCreated: false,
+    isFolderDeleted: false,
     isAssetget: false,
     isAssetAdded: false,
+    isAssetDeleted: false,
     message: '',
     folders: [],
     assets: []
@@ -59,6 +61,28 @@ export const addAssets = createAsyncThunk('asset/add-assets', async(data, thunkA
     }
 })
 
+// remove image
+export const removeAsset = createAsyncThunk('asset/remove-asset', async(data, thunkAPI) => {
+    try {
+        // console.log(inputText)
+        return await assetService.removeAsset(data)
+    } catch (error) {
+        const message = error.response && error.response.data && error.response.data.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+// remove folder
+export const removeFolder = createAsyncThunk('asset/remove-folder', async(dir, thunkAPI) => {
+    try {
+        // console.log(inputText)
+        return await assetService.removeFolder(dir)
+    } catch (error) {
+        const message = error.response && error.response.data && error.response.data.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 export const assetSlice = createSlice({
     name: 'asset',
     initialState,
@@ -69,6 +93,7 @@ export const assetSlice = createSlice({
             state.isSuccess = false
             state.isFolderCreated = false
             state.isAssetAdded = false
+            state.isAssetDeleted = false
             state.message = ''
         }
     },
@@ -112,8 +137,7 @@ export const assetSlice = createSlice({
                  state.isLoading = false
                  state.isError = true
                  state.message = action.payload
-            })
-            
+            })            
             .addCase(addAssets.pending, (state) => {
                 state.isLoading = true
             })
@@ -124,6 +148,34 @@ export const assetSlice = createSlice({
                 state.message = action.payload.msg
             })
             .addCase(addAssets.rejected, (state, action) => {
+                 state.isLoading = false
+                 state.isError = true
+                 state.message = action.payload
+            })        
+            .addCase(removeAsset.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(removeAsset.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.isAssetDeleted = true
+                state.message = action.payload.msg
+            })
+            .addCase(removeAsset.rejected, (state, action) => {
+                 state.isLoading = false
+                 state.isError = true
+                 state.message = action.payload
+            })      
+            .addCase(removeFolder.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(removeFolder.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.isFolderDeleted = true
+                state.message = action.payload.msg
+            })
+            .addCase(removeFolder.rejected, (state, action) => {
                  state.isLoading = false
                  state.isError = true
                  state.message = action.payload

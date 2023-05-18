@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import { addAssets, createFolder, getFolders, getImages, reset } from '../../../features/asset/assetSlice'
+import { addAssets, createFolder, getFolders, getImages, removeAsset, removeFolder, reset } from '../../../features/asset/assetSlice'
 
 const Photography = () => {
   const dispatch = useDispatch()
   const [selectedFiles, setSelectedFiles] = useState([]);
 
-  const { folders, assets, isError, message, isFolderCreated, isAssetAdded } = useSelector((state) => state.asset)
+  const { folders, assets, isError, message, isFolderCreated, isAssetAdded, isAssetDeleted, isFolderDeleted } = useSelector((state) => state.asset)
   const [currentType, setCurrentType] = useState(null)
 
   const [typeText, setTypeText] = useState('')
@@ -28,15 +28,23 @@ const Photography = () => {
     } else if (isError) {
       console.log("isError called")
       alert(message)
-    } else if(isAssetAdded) {
+    } else if (isAssetAdded) {
       alert(message)
       dispatch(reset())
       dispatch(getImages(currentType))
+    } else if (isAssetDeleted) {
+      alert(message)
+      dispatch(reset())
+      dispatch(getImages(currentType))
+    } else if (isFolderDeleted) {
+      alert(message)
+      dispatch(reset())
+      dispatch(getFolders())
     } else {
       console.log("default called")
       dispatch(getFolders())
     }
-  }, [folders[0]?.name, isFolderCreated, isError, isAssetAdded])
+  }, [folders[0]?.name, isFolderCreated, isError, isAssetAdded, isAssetDeleted, isFolderDeleted])
 
   const onTypeChange = (item) => {
     setCurrentType(item.name)
@@ -63,8 +71,20 @@ const Photography = () => {
     // Append each selected file to the FormData object
     for (let i = 0; i < selectedFiles.length; i++) {
       formData.append(`photos`, selectedFiles[i]);
-    }    
+    }
     dispatch(addAssets({ currentType, formData }))
+  }
+
+  const onDeleteImage = (item) => {
+    console.log(item)
+    dispatch(removeAsset({
+      type: item.type,
+      file: item.title
+    }))
+  }
+
+  const onDeleteFolder = () => {
+    dispatch(removeFolder({dir: currentType}))
   }
 
   return (
@@ -93,14 +113,14 @@ const Photography = () => {
                 && assets.length > 0 ? assets.map((asset, index) => (
                   <div key={index} className="p-1 border h-32 w-32 flex justify-center items-center relative">
                     <img className='max-h-full max-w-full' src={`http://localhost:5000/api${asset.source}`} alt={asset.title} />
-                    <div className="absolute h-full w-full opacity-0 hover:opacity-100 flex justify-center items-center">
-                      <button>del</button>
+                    <div className="absolute h-full w-full opacity-0 hover:opacity-100 backdrop-blur-sm flex justify-center items-center">
+                      <button onClick={() => onDeleteImage(asset)}>del</button>
                     </div>
                   </div>
                 )) :
                 <div className='w-full flex flex-col justify-center items-center gap-2'>
                   <p>No assets found</p>
-                  <button className='border border-red-600 hover:bg-red-600 hover:text-white py-2 px-3 rounded'>Delete Folder</button>
+                  <button onClick={onDeleteFolder} className='border border-red-600 hover:bg-red-600 hover:text-white py-2 px-3 rounded'>Delete Folder</button>
                 </div>}
             </div>
             <form className='w-full' onSubmit={handleSubmit}>

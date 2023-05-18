@@ -42,7 +42,8 @@ const getAllAsset = asyncHandler(async (req, res) => {
 const removeDir = asyncHandler(async (req, res) => {
   const folderName = `assets/${req.params.dir}`
   try {
-    fs.rmdirSync(folderName)
+    await fs.promises.rmdir(folderName)
+    await Directory.findOneAndDelete({ name: req.params.dir })
     res.status(200).json({ msg: "Folder deleted successfully" })
   } catch (err) {
     if (err.code === "ENOENT") {
