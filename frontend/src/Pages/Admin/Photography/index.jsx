@@ -129,10 +129,12 @@ const Photography = () => {
                   {folders.length > 0 && <button onClick={onDeleteFolder} className='border border-red-600 hover:bg-red-600 hover:text-white py-2 px-3 rounded'>Delete Folder</button>}
                 </div>}
             </div>
-            <form className='w-full' onSubmit={handleSubmit}>
-              <input type="file" multiple onChange={(event) => setSelectedFiles(event.target.files)} />
-              <button type="submit">Upload</button>
-            </form>
+            {folders.length > 0 &&
+              <form className='w-full' onSubmit={handleSubmit}>
+                <input type="file" multiple onChange={(event) => setSelectedFiles(event.target.files)} />
+                <button type="submit">Upload</button>
+              </form>
+            }
           </div>
         }
       </div>
