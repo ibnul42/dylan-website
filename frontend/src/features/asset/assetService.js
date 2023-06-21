@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const API_URL = "http://localhost:5000/api/assets/"
+const API_URL = `${import.meta.env.VITE_REACT_DOMAIN_URL}/assets/`
 
 // get all folders
 const getFolders = async () => {

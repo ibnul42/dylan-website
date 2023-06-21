@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const API_URL = "http://localhost:5000/api/events/"
+const API_URL = `${import.meta.env.VITE_REACT_DOMAIN_URL}/api/events/`
 
 const singleEvent = async (date) => {
   const response = await axios.post(API_URL + "single-event", {
