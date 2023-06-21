@@ -256,7 +256,7 @@ const PhotographDetails = () => {
                         <Modal isOpen={isModalOpen} closeModal={closeModal}>
                             <div className="flex flex-col gap-3 items-center">
                                 <div className=" relative flex justify-center text-white">
-                                    <img src={config.domainUrl + selectedImage?.source} className="min-w-[24vw] min-h-[24vh] w-4/5 max-h-[95vh] self-center" alt="" />
+                                    <img src={config.domainUrl + selectedImage?.source} className="min-w-[24vw] min-h-[24vh] w-4/5 max-h-[95vh] self-center" alt={item.title} />
                                     <div className="absolute top-0 left-0 h-full flex flex-col justify-center items-center text-3xl">
                                         <button className='' onClick={() => buttonHandler('left')}>{`<`}</button>
                                     </div>

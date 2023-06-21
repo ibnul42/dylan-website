@@ -6,6 +6,7 @@ const fs = require("fs")
 const multer = require("multer")
 const Directory = require("../models/directoryModel")
 const Asset = require("../models/assetModel")
+const sharp = require("sharp")
 
 const createDir = asyncHandler(async (req, res) => {
   const path = req.body.dir
@@ -78,21 +79,48 @@ const removeAsset = asyncHandler(async (req, res) => {
 })
 
 const addImages = asyncHandler(async (req, res) => {
-  const assetDir = req.params.assetDir
+  const assetDir = req.params.assetDir;
+  const compressedImages = [];
+
   for (const file of req.files) {
-    // console.log(file.originalName)
-    // console.log(file)
+    const compressedImagePath = await compressImage(assetDir, file);
+    compressedImages.push(compressedImagePath);
+
     Asset.create({
       title: file.originalname,
       type: assetDir,
       source: `/assets/${assetDir}/${file.originalname}`,
-    })
+    });
   }
-  // req.files is array of `photos` files
-  // req.body will contain the text fields, if there were any
 
-  res.status(200).json({ msg: "uploaded files successfully" })
-})
+  res.status(200).json({ msg: "uploaded files successfully" });
+});
+
+const compressImage = async (assetDir, file) => {
+  const { path: inputImagePath, filename: inputImageFilename } = file
+  const outputFolderPath = `assets/${assetDir}`
+  const outputImagePath = `${outputFolderPath}/${inputImageFilename}`
+  const targetSizeInBytes = 0.7 * 1024 * 1024 // 0.7MB
+  console.log(outputFolderPath)
+
+  // Create the output folder if it doesn't exist
+  if (!fs.existsSync(outputFolderPath)) {
+    fs.mkdirSync(outputFolderPath, { recursive: true })
+  }
+
+  let quality = 80 // Initial quality value
+  let compressedBuffer = await sharp(inputImagePath).jpeg({ quality }).toBuffer()
+  while (compressedBuffer.length > targetSizeInBytes && quality >= 10) {
+    quality -= 5 // Decrease the quality by 10
+    compressedBuffer = await sharp(inputImagePath).jpeg({ quality }).toBuffer()
+  }
+  fs.writeFileSync(outputImagePath, compressedBuffer)
+  console.log(`Image compression completed for ${inputImageFilename}`)
+  // fs.unlinkSync(inputImagePath);
+  return outputImagePath
+}
+
+
 
 const getImage = asyncHandler(async (req, res) => {
   const { dir, name } = req.params

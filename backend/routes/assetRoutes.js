@@ -15,11 +15,10 @@ const multer = require("multer")
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // console.log(req.params)
     return cb(null, `assets/${req.params.assetDir}`)
   },
   filename: function (req, file, cb) {
-    return cb(null, file.originalname)
+    return cb(null, file.originalname);
   },
 })
 
