@@ -14,7 +14,7 @@ const About = () => {
           <p className='max-w-md font-semibold text-gray-500 text-center'>I am a independent photographer/ videographer currently based out of Winston-Salem, NC.</p>
         </div>
         <div className="col-span-1 flex justify-center">
-          <img src="/assets/profile.png" alt="profile" className='md:max-h-[calc(100vh-200px)] object-cover object-top rounded-lg' />
+          <img src="/assets/about.jpg" alt="profile" className='md:max-h-[calc(100vh-200px)] object-cover object-top rounded-lg' />
         </div>
       </div>
     </div>

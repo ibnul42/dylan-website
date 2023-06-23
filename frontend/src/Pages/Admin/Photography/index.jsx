@@ -7,7 +7,7 @@ const Photography = () => {
   const dispatch = useDispatch()
   const [selectedFiles, setSelectedFiles] = useState([]);
 
-  const { folders, assets, isError, message, isFolderCreated, isAssetAdded, isAssetDeleted, isFolderDeleted } = useSelector((state) => state.asset)
+  const { folders, assets, isError, message, isFolderCreated, isAssetAdded, isAssetDeleted, isFolderDeleted, isLoading } = useSelector((state) => state.asset)
   const [currentType, setCurrentType] = useState(null)
 
   const [typeText, setTypeText] = useState('')
@@ -116,7 +116,7 @@ const Photography = () => {
               {assets
                 && assets.length > 0 ? assets.map((asset, index) => (
                   <div key={index} className="p-1 border h-32 w-32 flex justify-center items-center relative">
-                    <img className='max-h-full max-w-full' src={`http://localhost:5000/api${asset.source}`} alt={asset.title} />
+                    <img className='max-h-full max-w-full' src={`${import.meta.env.VITE_REACT_DOMAIN_URL}${asset.source}`} alt={asset.title} />
                     <div className="absolute h-full w-full opacity-0 hover:opacity-100 backdrop-blur-sm flex justify-center items-center">
                       <button onClick={() => onDeleteImage(asset)}>
                         <img src="/assets/delete.svg" className='h-10 w-10' alt="" />
@@ -132,7 +132,7 @@ const Photography = () => {
             {folders.length > 0 &&
               <form className='w-full' onSubmit={handleSubmit}>
                 <input type="file" multiple onChange={(event) => setSelectedFiles(event.target.files)} />
-                <button type="submit">Upload</button>
+                <button type="submit" disabled={isLoading ? true : false} className={`border  ${isLoading ? 'bg-red-300 hover:bg-red-300 border-red-500' : 'hover:bg-indigo-500 border-blue-500'} rounded hover:text-white px-3 py-1`}>{isLoading ? 'Please wait' : 'Upload'}</button>
               </form>
             }
           </div>
