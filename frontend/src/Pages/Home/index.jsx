@@ -31,12 +31,12 @@ const Home = () => {
           </div>
         </div>
         <div className="my-2 grid gap-5 md:gap-10 grid-cols-1 md:grid-cols-2">
-          <div className="col-span-1 rounded-md overflow-hidden">
-            <Link to="/photography"><img src="/assets/photography.jpg" alt="" srcSet="" className='w-full h-[60vh] max-h-96 object-cover object-left' /></Link>
+          <div className="col-span-1 rounded-md overflow-hidden flex flex-col items-center">
+            <Link to="/photography"><img src="/assets/photography.jpg" alt="" srcSet="" className='w-full h-[60vh] max-h-[450px] object-contain object-left' /></Link>
             <p className='my-2 text-center'>Photography</p>
           </div>
-          <div className="col-span-1 rounded-md overflow-hidden">
-            <Link to="/photography"><img src="/assets/rug.png" alt="" srcSet="" className='w-full h-[60vh] max-h-96 object-cover object-left' /></Link>
+          <div className="col-span-1 rounded-md overflow-hidden flex flex-col items-center">
+            <Link to="/photography"><img src="/assets/rug.png" alt="" srcSet="" className='w-full h-[60vh] max-h-[450px] object-cover object-left' /></Link>
             <p className='my-2 text-center'>Rug-Making / Tufting</p>
           </div>
         </div>
