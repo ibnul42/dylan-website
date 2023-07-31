@@ -96,6 +96,25 @@ const addImages = asyncHandler(async (req, res) => {
   res.status(200).json({ msg: "uploaded files successfully" });
 });
 
+const thumbnailImage = asyncHandler(async (req, res) => {
+  const file = req.file
+  const assetDir = req.params.assetDir;
+  // const compressedImages = [];
+
+  // for (const file of req.files) {
+  //   const compressedImagePath = await compressImage(assetDir, file);
+  //   compressedImages.push(compressedImagePath);
+
+  Asset.create({
+    title: file.originalname,
+    type: assetDir,
+    source: `/assets/${assetDir}/thumbnail.jpg`,
+  });
+  // }
+
+  res.status(200).json({ msg: "uploaded files successfully" });
+});
+
 const compressImage = async (assetDir, file) => {
   const { path: inputImagePath, filename: inputImageFilename } = file
   const outputFolderPath = `assets/${assetDir}`
@@ -120,8 +139,6 @@ const compressImage = async (assetDir, file) => {
   return outputImagePath
 }
 
-
-
 const getImage = asyncHandler(async (req, res) => {
   const { dir, name } = req.params
   res.download(`./assets/${dir}/${name}`)
@@ -142,4 +159,5 @@ module.exports = {
   getImage,
   getAllImages,
   getAllAssets,
+  thumbnailImage
 }
