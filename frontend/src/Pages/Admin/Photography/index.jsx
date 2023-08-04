@@ -102,6 +102,19 @@ const Photography = () => {
           <button key={index} className={`${currentType === item.name ? 'bg-sky-700' : 'bg-sky-500'} hover:bg-sky-700 text-stone-50 py-2 px-3 rounded`} onClick={() => onTypeChange(item)}>{item.name.split("_").join(" ")}</button>
         ))}
       </div>
+      <div className="">
+        <p className='font-semibold text-lg'>Thumbnail</p>
+        <div className="p-1 border h-32 w-32 flex justify-center items-center relative">
+          <img className='max-h-full max-w-full' src={`${import.meta.env.VITE_REACT_DOMAIN_URL}thumbnail`} alt="thumbnail" />
+          <div className="absolute h-full w-full opacity-0 hover:opacity-100 backdrop-blur-sm flex justify-center items-center">
+            <button
+            //  onClick={() => onDeleteImage(asset)}
+            >
+              <img src="/assets/delete.svg" className='h-10 w-10' alt="" />
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="flex-grow flex justify-center">
         {createType ?
           <div className="border rounded p-3 max-w-sm self-center flex flex-col gap-5">
