@@ -35,7 +35,6 @@ const getAllActivities = async () => {
 }
 
 const createActivity = async (data) => {
-  console.log(data)
   const token = JSON.parse(localStorage.getItem("user"))["token"]
   const config = {
     headers: { Authorization: `Bearer ${token}` },

@@ -50,7 +50,6 @@ const Photography = () => {
       dispatch(getAssets())
     }
   }, [folders[0]?.name, assets[0]?.title])
-  console.log(alltypes)
   return (
     <div className='flex-1 my-2'>
       <Helmet>

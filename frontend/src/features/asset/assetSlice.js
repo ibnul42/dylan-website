@@ -32,7 +32,6 @@ export const getFolders = createAsyncThunk('asset/get-dirs', async(thunkAPI) => 
 // create folders
 export const createFolder = createAsyncThunk('asset/create-dir', async(inputText, thunkAPI) => {
     try {
-        // console.log(inputText)
         return await assetService.createFolder(inputText)
     } catch (error) {
         const message = error.response && error.response.data && error.response.data.message || error.message || error.toString()
@@ -43,7 +42,6 @@ export const createFolder = createAsyncThunk('asset/create-dir', async(inputText
 // get all images
 export const getImages = createAsyncThunk('asset/all-images', async(type, thunkAPI) => {
     try {
-        // console.log(inputText)
         return await assetService.getImages(type)
     } catch (error) {
         const message = error.response && error.response.data && error.response.data.message || error.message || error.toString()
@@ -54,7 +52,6 @@ export const getImages = createAsyncThunk('asset/all-images', async(type, thunkA
 // add images
 export const addAssets = createAsyncThunk('asset/add-assets', async(data, thunkAPI) => {
     try {
-        // console.log(inputText)
         return await assetService.addAssets(data)
     } catch (error) {
         const message = error.response && error.response.data && error.response.data.message || error.message || error.toString()
@@ -65,7 +62,6 @@ export const addAssets = createAsyncThunk('asset/add-assets', async(data, thunkA
 // remove image
 export const removeAsset = createAsyncThunk('asset/remove-asset', async(data, thunkAPI) => {
     try {
-        // console.log(inputText)
         return await assetService.removeAsset(data)
     } catch (error) {
         const message = error.response && error.response.data && error.response.data.message || error.message || error.toString()
@@ -76,7 +72,6 @@ export const removeAsset = createAsyncThunk('asset/remove-asset', async(data, th
 // remove folder
 export const removeFolder = createAsyncThunk('asset/remove-folder', async(dir, thunkAPI) => {
     try {
-        // console.log(inputText)
         return await assetService.removeFolder(dir)
     } catch (error) {
         const message = error.response && error.response.data && error.response.data.message || error.message || error.toString()
@@ -87,7 +82,6 @@ export const removeFolder = createAsyncThunk('asset/remove-folder', async(dir, t
 // get all assets
 export const getAssets = createAsyncThunk('asset/all-assets', async( thunkAPI) => {
     try {
-        // console.log(inputText)
         return await assetService.getAssets()
     } catch (error) {
         const message = error.response && error.response.data && error.response.data.message || error.message || error.toString()

@@ -135,7 +135,6 @@ const compressImage = async (assetDir, file) => {
   const outputFolderPath = `assets/${assetDir}`
   const outputImagePath = `${outputFolderPath}/${inputImageFilename}`
   const targetSizeInBytes = 0.7 * 1024 * 1024 // 0.7MB
-  console.log(outputFolderPath)
 
   // Create the output folder if it doesn't exist
   if (!fs.existsSync(outputFolderPath)) {

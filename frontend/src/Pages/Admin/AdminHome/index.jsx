@@ -43,14 +43,12 @@ const AdminHome = () => {
   }
 
   const onTimelineDelete = (id) => {
-    console.log(id)
     if (confirm("Are you sure you want to delete?")) {
       dispatch(deleteTimeline(id))
     }
   }
 
   const onActivityDelete = (id) => {
-    console.log(id)
     if (confirm("Are you sure you want to delete?")) {
       dispatch(deleteActivity(id))
     }

@@ -228,7 +228,6 @@ const PhotographDetails = () => {
     }
 
     const closeModal = () => {
-        console.log(1234)
         setIsModalOpen(false);
     };
 

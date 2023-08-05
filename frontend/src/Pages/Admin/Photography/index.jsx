@@ -22,13 +22,11 @@ const Photography = () => {
       setCurrentType(folders[0].name)
       dispatch(getImages(folders[0].name))
     } else if (isFolderCreated) {
-      console.log("isFolderCreated called")
       setCreateType(false)
       setTypeText('')
       dispatch(reset())
       dispatch(getFolders())
     } else if (isError) {
-      console.log("isError called")
       toast.error(message)
     } else if (isAssetAdded) {
       toast.success(message)
@@ -63,7 +61,6 @@ const Photography = () => {
   }
 
   const onTypeCreate = () => {
-    // console.log(typeText.trim())
     dispatch(createFolder(typeText.trim()))
     // setCreateType(false)
   }
@@ -82,7 +79,6 @@ const Photography = () => {
   }
 
   const onDeleteImage = (item) => {
-    console.log(item)
     dispatch(removeAsset({
       type: item.type,
       file: item.title
@@ -109,7 +105,6 @@ const Photography = () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_DOMAIN_URL}/assets/upload/thumbnail/${currentType}`, formData, config)
       setThumbnailChange(true)
-      console.log("THUMBNAIL UPLOADED", response)
     } catch (error) {
       console.log(error)
     }

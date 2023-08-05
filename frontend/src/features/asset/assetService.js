@@ -26,7 +26,6 @@ const createFolder = async (inputText) => {
     return response.data
   } catch (error) {
     if (error.response.status === 400) {
-      console.log(error.response)
       throw new Error(error.response.data.msg)
     } else {
       throw new Error("An error occurred while creating the folder")
@@ -47,7 +46,6 @@ const getImages = async (type) => {
     return { images, thumb }
   } catch (error) {
     if (error.response.status === 400) {
-      console.log(error.response)
       throw new Error(error.response.data.msg)
     } else {
       throw new Error("An error occurred while getting assets")
@@ -58,11 +56,9 @@ const getImages = async (type) => {
 const getAssets = async (type) => {
   try {
     const response = await axios.get(API_URL + "all-assets/")
-    console.log(response)
     return response.data
   } catch (error) {
     if (error.response.status === 400) {
-      console.log(error.response)
       throw new Error(error.response.data.msg)
     } else {
       throw new Error("An error occurred while getting assets")
@@ -82,11 +78,9 @@ const addAssets = async ({ currentType, formData }) => {
       formData,
       config
     )
-    console.log(response)
     return response.data
   } catch (error) {
     if (error.response.status === 400) {
-      console.log(error.response)
       throw new Error(error.response.data.msg)
     } else {
       throw new Error("An error occurred while getting assets")
@@ -105,11 +99,9 @@ const removeAsset = async ({ type, file }) => {
       API_URL + "rmFile/" + type + "/" + file,
       config
     )
-    console.log(response)
     return response.data
   } catch (error) {
     if (error.response.status === 400) {
-      console.log(error.response)
       throw new Error(error.response.data.msg)
     } else {
       throw new Error("An error occurred while getting assets")
