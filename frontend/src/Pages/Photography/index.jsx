@@ -50,6 +50,7 @@ const Photography = () => {
       dispatch(getAssets())
     }
   }, [folders[0]?.name, assets[0]?.title])
+  console.log(alltypes)
   return (
     <div className='flex-1 my-2'>
       <Helmet>
@@ -60,8 +61,8 @@ const Photography = () => {
         <div className="my-2 grid gap-5 md:gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {alltypes && alltypes.length > 0 && alltypes.map((item, index) => (
             <div key={index} className="col-span-1 rounded-md overflow-hidden">
-              <Link to={`/photography/${item.name.toLocaleLowerCase()}`} className='w-full h-[75vh] max-h-96 flex justify-center'><img src={config.domainUrl + item.source} alt={item.name} srcSet="" className='h-full w-full object-cover object-center' />
-              </Link>
+              <Link to={`/photography/${item.name.toLocaleLowerCase()}`} className='w-full h-[75vh] max-h-96 flex justify-center'><img src={`${import.meta.env.VITE_REACT_DOMAIN_URL}/assets/${item?.name}/thumbnail.jpg`} alt={item.name} srcSet="" className='h-full w-full object-cover object-center' />
+              </Link> 
               <div className="flex justify-between items-center font-semibold my-2">
                 <p className='text-lg'>{item.name}</p>
                 {item.moto && <p className='hidden md:block'>{item.motto}</p>}

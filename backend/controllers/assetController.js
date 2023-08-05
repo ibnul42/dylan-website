@@ -112,7 +112,22 @@ const thumbnailImage = asyncHandler(async (req, res) => {
   });
   // }
 
-  res.status(200).json({ msg: "uploaded files successfully" });
+  res.status(200).json({ msg: "uploaded thumbnail successfully" });
+});
+
+const updateThumbnailImage = asyncHandler(async (req, res) => {
+  const file = req.file
+  const {assetDir, id} = req.params;
+  // const { id } = req.body
+
+
+  Asset.findByIdAndUpdate(id, {
+    title: file.originalname,
+    type: assetDir,
+    // source: `/assets/${assetDir}/thumbnail.jpg`,
+  });
+
+  res.status(200).json({ msg: "updated thumbnail successfully" });
 });
 
 const compressImage = async (assetDir, file) => {
@@ -159,5 +174,6 @@ module.exports = {
   getImage,
   getAllImages,
   getAllAssets,
-  thumbnailImage
+  thumbnailImage,
+  updateThumbnailImage
 }

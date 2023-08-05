@@ -189,7 +189,7 @@ const images = [
 
 import cloudinary from 'cloudinary-core';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAssets } from '../../features/asset/assetSlice';
+import { getAssets, getImages } from '../../features/asset/assetSlice';
 
 // const cl = new cloudinary.Cloudinary({cloud_name: 'ibnulashir'});
 
@@ -240,7 +240,7 @@ const PhotographDetails = () => {
         if (assets.length > 0) {
             setFilteredImages(assets.filter((item) => item.type.toLocaleLowerCase() === type.toLocaleLowerCase()))
         } else {
-            dispatch(getAssets())
+            dispatch(getImages(type))
         }
     }, [assets[0]?.title])
     return (

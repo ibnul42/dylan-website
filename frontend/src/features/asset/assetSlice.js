@@ -15,7 +15,8 @@ const initialState = {
     isAssetDeleted: false,
     message: '',
     folders: [],
-    assets: []
+    assets: [],
+    thumb: null,
 }
 
 // get all folders
@@ -142,7 +143,8 @@ export const assetSlice = createSlice({
             .addCase(getImages.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.assets = action.payload
+                state.assets = action.payload.images
+                state.thumb = action.payload.thumb
             })
             .addCase(getImages.rejected, (state, action) => {
                  state.isLoading = false

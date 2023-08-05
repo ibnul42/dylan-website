@@ -2,18 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { addAssets, createFolder, getFolders, getImages, removeAsset, removeFolder, reset } from '../../../features/asset/assetSlice'
 import { toast } from 'react-toastify'
+import axios from 'axios'
 
 const Photography = () => {
   const dispatch = useDispatch()
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedThumbnail, setSelectedThumbnail] = useState([]);
+  const [thumbnailChange, setThumbnailChange] = useState(false)
 
-  const { folders, assets, isError, message, isFolderCreated, isAssetAdded, isAssetDeleted, isFolderDeleted, isLoading } = useSelector((state) => state.asset)
+  const { folders, assets, isError, message, isFolderCreated, isAssetAdded, isAssetDeleted, isFolderDeleted, isLoading, thumb } = useSelector((state) => state.asset)
   const [currentType, setCurrentType] = useState(null)
 
   const [typeText, setTypeText] = useState('')
   const [createType, setCreateType] = useState(false)
-
-  // const []
 
 
   useEffect(() => {
@@ -31,7 +32,6 @@ const Photography = () => {
       toast.error(message)
     } else if (isAssetAdded) {
       toast.success(message)
-      // alert(message)
       dispatch(reset())
       dispatch(getImages(currentType))
     } else if (isAssetDeleted) {
@@ -41,14 +41,16 @@ const Photography = () => {
       dispatch(getImages(currentType))
     } else if (isFolderDeleted) {
       toast.success(message)
-      // alert(message)
       dispatch(reset())
       dispatch(getFolders())
+    } else if (thumbnailChange) {
+      setThumbnailChange(false)
+      dispatch(reset())
+      dispatch(getImages(currentType))
     } else {
-      console.log("default called")
       dispatch(getFolders())
     }
-  }, [folders[0]?.name, isFolderCreated, isError, isAssetAdded, isAssetDeleted, isFolderDeleted])
+  }, [folders[0]?.name, isFolderCreated, isError, isAssetAdded, isAssetDeleted, isFolderDeleted, thumbnailChange])
 
   const onTypeChange = (item) => {
     setCurrentType(item.name)
@@ -91,6 +93,52 @@ const Photography = () => {
     dispatch(removeFolder({ dir: currentType }))
   }
 
+  const thumbnailUpload = async (event) => {
+    event.preventDefault();
+    const token = JSON.parse(localStorage.getItem("user"))["token"]
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+
+    // Create a new FormData object
+    const formData = new FormData();
+
+    // Append each selected file to the FormData object
+    formData.append(`thumbnail`, selectedThumbnail[0]);
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_REACT_DOMAIN_URL}/assets/upload/thumbnail/${currentType}`, formData, config)
+      setThumbnailChange(true)
+      console.log("THUMBNAIL UPLOADED", response)
+    } catch (error) {
+      console.log(error)
+    }
+    dispatch(addAssets({ currentType, formData }))
+  }
+
+  const thumbnailUpdate = async (event) => {
+    event.preventDefault();
+    const token = JSON.parse(localStorage.getItem("user"))["token"]
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+
+    // Create a new FormData object
+    const formData = new FormData();
+
+    // Append each selected file to the FormData object
+    formData.append(`thumbnail`, selectedThumbnail[0]);
+
+    try {
+      const response = await axios.put(`${import.meta.env.VITE_REACT_DOMAIN_URL}/assets/upload/thumbnail/${currentType}/${thumb[0]._id}`, formData, config)
+      setThumbnailChange(true)
+      dispatch(getImages(currentType))
+    } catch (error) {
+      console.log(error)
+    }
+    dispatch(addAssets({ currentType, formData }))
+  }
+
   return (
     <div className='p-2 pr-6 flex flex-col h-full'>
       <div className="flex justify-between">
@@ -104,17 +152,23 @@ const Photography = () => {
       </div>
       <div className="">
         <p className='font-semibold text-lg'>Thumbnail</p>
-        <div className="p-1 border h-32 w-32 flex justify-center items-center relative">
-          <img className='max-h-full max-w-full' src={`${import.meta.env.VITE_REACT_DOMAIN_URL}thumbnail`} alt="thumbnail" />
-          <div className="absolute h-full w-full opacity-0 hover:opacity-100 backdrop-blur-sm flex justify-center items-center">
-            <button
-            //  onClick={() => onDeleteImage(asset)}
-            >
-              <img src="/assets/delete.svg" className='h-10 w-10' alt="" />
-            </button>
-          </div>
-        </div>
+        {thumb && thumb.length > 0 &&
+          <div className="p-1 border h-32 w-32 flex justify-center items-center relative">
+            <img className='max-h-full max-w-full' src={`${import.meta.env.VITE_REACT_DOMAIN_URL}${thumb[0]?.source}`} alt="thumbnail" />
+            <div className="absolute h-full w-full opacity-0 hover:opacity-100 backdrop-blur-sm flex justify-center items-center">
+              <button
+              //  onClick={() => onDeleteImage(asset)}
+              >
+                <img src="/assets/delete.svg" className='h-10 w-10' alt="" />
+              </button>
+            </div>
+          </div>}
+        <form className='w-full' onSubmit={thumb && thumb.length > 0 ? thumbnailUpdate : thumbnailUpload}>
+          <input type="file" onChange={(event) => setSelectedThumbnail(event.target.files)} />
+          <button type="submit" disabled={isLoading ? true : false} className={`border  ${isLoading ? 'bg-red-300 hover:bg-red-300 border-red-500' : 'hover:bg-indigo-500 border-blue-500'} rounded hover:text-white px-3 py-1`}>{isLoading ? 'Please wait' : 'Upload'}</button>
+        </form>
       </div>
+      <p className='w-full py-2 flex-shrink-0 font-semibold text-lg'>Photos</p>
       <div className="flex-grow flex justify-center">
         {createType ?
           <div className="border rounded p-3 max-w-sm self-center flex flex-col gap-5">

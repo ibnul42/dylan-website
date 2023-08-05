@@ -9,6 +9,7 @@ lerna-debug.log*
 
 .env
 node_modules
+assets
 frontend/node_modules
 backend/node_modules
 dist

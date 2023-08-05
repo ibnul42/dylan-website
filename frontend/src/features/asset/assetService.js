@@ -42,8 +42,9 @@ const getImages = async (type) => {
 
   try {
     const response = await axios.get(API_URL + "all-images/" + type)
-    console.log(response)
-    return response.data
+    const images = await response.data.filter(img => img.source !== `/assets/${type}/thumbnail.jpg`)
+    const thumb = await response.data.filter(img => img.source === `/assets/${type}/thumbnail.jpg`)
+    return { images, thumb }
   } catch (error) {
     if (error.response.status === 400) {
       console.log(error.response)

@@ -10,6 +10,7 @@ const {
   removeAsset,
   getAllAssets,
   thumbnailImage,
+  updateThumbnailImage,
 } = require("../controllers/assetController")
 const { protect } = require("../middleware/authMiddleware")
 const multer = require("multer")
@@ -44,6 +45,7 @@ router.delete("/rmdir/:dir", protect, removeDir)
 router.delete("/rmFile/:dir/:file", protect, removeAsset)
 router.post("/upload/:assetDir", protect, upload.array("photos", 12), addImages)
 router.post("/upload/thumbnail/:assetDir", protect, uploadSingle.single('thumbnail'), thumbnailImage)
+router.put("/upload/thumbnail/:assetDir/:id", protect, uploadSingle.single('thumbnail'), updateThumbnailImage)
 // router.post('/login', LoginUser)
 // router.get('/me', protect, getMe)
 // router.post('/me/update', protect, updateProfile)
