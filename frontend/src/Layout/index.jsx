@@ -12,6 +12,7 @@ import AdminHome from "../Pages/Admin/AdminHome"
 import Profile from "../Pages/Admin/Profile"
 import AdminPhotography from "../Pages/Admin/Photography"
 import Login from "../Pages/Login";
+import InProgress from "../Pages/InProgress";
 
 const adminLinks = [
   { titile: "Profile", path: "/admin/profile" },
@@ -28,9 +29,6 @@ const Layout = () => {
   const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
-    // if (!user) {
-    //   navigate("/login")
-    // }
     if (user && location.pathname.toString().includes("/admin")) {
       setAdminPanel(true)
     }
@@ -45,19 +43,14 @@ const Layout = () => {
   }
 
   return (
-    // <div className={`${open ? "h-screen overflow-y-hidden md:min-h-screen md:overflow-y-visible" : "min-h-screen"} overflow-x-hidden flex flex-col justify-between text-white bg-black`}>
-
-
-    // </div>
     <div
-      // className={`${adminPanel ? "w-screen grid grid-cols-12" : "max-w-7xl"} flex-auto mx-auto w-full`}
       className={`${open ? "h-screen overflow-y-hidden md:min-h-screen md:overflow-y-visible" : "min-h-screen"} overflow-x-hidden flex flex-col justify-between text-white bg-black`}
     >
       <div className={`${adminPanel ? 'col-span-12' : ''}`}>
         <Header open={open} setOpen={setOpen} />
       </div>
 
-      <div className={`${adminPanel ? "w-screen grid grid-cols-12" : ""} flex-grow`}>
+      <div className={`${adminPanel ? "w-screen grid grid-cols-12" : ""} flex-1 flex-grow`}>
         {adminPanel && (
           <div className="col-span-2 border-r flex flex-col justify-between">
             <div className="flex flex-col">
@@ -82,13 +75,10 @@ const Layout = () => {
             </Link>
           </div>
         )}
-        <div className={`${adminPanel ? "col-span-10 bg-white text-black" : ""}`}>
+        <div className={`${adminPanel ? "col-span-10 bg-white text-black" : ""} h-full`}>
           <Routes>
             <Route path="/" element={<Home />} />
-            {/* <Route path="/contact" element={<Contact />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/events" element={<Event />} /> */}
-            <Route path="/" element={<Home />} />
+            <Route path="/in-progress" element={<InProgress />} />
             <Route path="/photography" element={<Photography />} />
             <Route path="/about" element={<About />} />
             <Route path="/photography/:type" element={<PhotographDetails />} />

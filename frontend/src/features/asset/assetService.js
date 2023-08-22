@@ -120,11 +120,9 @@ const removeFolder = async ({ dir }) => {
       API_URL + "rmdIR/" + dir,
       config
     )
-    console.log(response)
     return response.data
   } catch (error) {
     if (error.response.status === 400) {
-      console.log(error.response)
       throw new Error(error.response.data.msg)
     } else {
       throw new Error("An error occurred while getting assets")
