@@ -14,9 +14,9 @@ const createDir = asyncHandler(async (req, res) => {
     res.status(400).json({ msg: "Please input folder name" })
   }
   try {
-    fs.mkdirSync(`assets/${path.trim().split(" ").join("_")}`)
+    fs.mkdirSync(`assets/${path.trim().split(" ").join("_").toLowerCase()}`)
     Directory.create({
-      name: path.trim().split(" ").join("_"),
+      name: path.trim().split(" ").join("_").toLowerCase(),
     })
     res.status(200).json({
       status: true,
@@ -117,7 +117,7 @@ const thumbnailImage = asyncHandler(async (req, res) => {
 
 const updateThumbnailImage = asyncHandler(async (req, res) => {
   const file = req.file
-  const {assetDir, id} = req.params;
+  const { assetDir, id } = req.params;
   // const { id } = req.body
 
 
@@ -164,6 +164,28 @@ const getAllImages = asyncHandler(async (req, res) => {
   res.status(200).json(assets)
 })
 
+const removeThumb = asyncHandler(async (req, res) => {
+  const folderName = `assets/${req.params.dir}`
+  const { dir } = req.params
+
+  try {
+    // Remove the file from disk
+    await fs.promises.unlink(`assets/${req.params.dir}/thumbnail.jpg`)
+
+    // Remove the corresponding document from the database
+    await Asset.findOneAndDelete({ source: `/assets/${dir}/thumbnail.jpg`, type: dir })
+
+    res.status(200).json({ msg: "Thumbanil deleted successfully" })
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      res.status(400).json({ msg: "Thumbanil not found" })
+    } else {
+      console.error(err)
+      res.status(500).json({ msg: "Server error" })
+    }
+  }
+})
+
 module.exports = {
   createDir,
   removeDir,
@@ -174,5 +196,6 @@ module.exports = {
   getAllImages,
   getAllAssets,
   thumbnailImage,
-  updateThumbnailImage
+  updateThumbnailImage,
+  removeThumb
 }

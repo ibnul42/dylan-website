@@ -10,6 +10,9 @@ const Photography = () => {
   const [selectedThumbnail, setSelectedThumbnail] = useState([]);
   const [thumbnailChange, setThumbnailChange] = useState(false)
 
+  const [tempThumb, setTempThumb] = useState();
+  const [changedThumbnail, setChangedThumbnail] = useState()
+
   const { folders, assets, isError, message, isFolderCreated, isAssetAdded, isAssetDeleted, isFolderDeleted, isLoading, thumb } = useSelector((state) => state.asset)
   const [currentType, setCurrentType] = useState(null)
 
@@ -28,13 +31,13 @@ const Photography = () => {
       dispatch(getFolders())
     } else if (isError) {
       toast.error(message)
+      dispatch(reset())
     } else if (isAssetAdded) {
       toast.success(message)
       dispatch(reset())
       dispatch(getImages(currentType))
     } else if (isAssetDeleted) {
       toast.success(message)
-      // alert(message)
       dispatch(reset())
       dispatch(getImages(currentType))
     } else if (isFolderDeleted) {
@@ -105,6 +108,7 @@ const Photography = () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_DOMAIN_URL}/assets/upload/thumbnail/${currentType}`, formData, config)
       setThumbnailChange(true)
+      setChangedThumbnail(tempThumb)
     } catch (error) {
       console.log(error)
     }
@@ -128,10 +132,28 @@ const Photography = () => {
       const response = await axios.put(`${import.meta.env.VITE_REACT_DOMAIN_URL}/assets/upload/thumbnail/${currentType}/${thumb[0]._id}`, formData, config)
       setThumbnailChange(true)
       dispatch(getImages(currentType))
+      setChangedThumbnail(tempThumb)
     } catch (error) {
       console.log(error)
     }
     dispatch(addAssets({ currentType, formData }))
+  }
+
+  const onDeleteThumbnail = async () => {
+    const token = JSON.parse(localStorage.getItem("user"))["token"]
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+
+    try {
+      const response = await axios.delete(`${import.meta.env.VITE_REACT_DOMAIN_URL}/assets/rmThumb/${currentType}`,
+        config
+      )
+      toast.success(response.data.msg)
+      setChangedThumbnail()
+    } catch (error) {
+      toast.error('Failed to delete thumbnail')
+    }
   }
 
   return (
@@ -142,28 +164,38 @@ const Photography = () => {
       </div>
       <div className="flex flex-wrap gap-1 py-3">
         {folders && folders.length > 0 && folders.map((item, index) => (
-          <button key={index} className={`${currentType === item.name ? 'bg-sky-700' : 'bg-sky-500'} hover:bg-sky-700 text-stone-50 py-2 px-3 rounded`} onClick={() => onTypeChange(item)}>{item.name.split("_").join(" ")}</button>
+          <button key={index} className={`${currentType === item.name ? 'bg-sky-700' : 'bg-sky-500'} hover:bg-sky-700 text-stone-50 py-2 px-3 rounded`} onClick={() => {
+            onTypeChange(item)
+            setChangedThumbnail()
+          }}>{item.name.split("_").join(" ")}</button>
         ))}
       </div>
-      <div className="">
-        <p className='font-semibold text-lg'>Thumbnail</p>
-        {thumb && thumb.length > 0 &&
-          <div className="p-1 border h-32 w-32 flex justify-center items-center relative">
-            <img className='max-h-full max-w-full' src={`${import.meta.env.VITE_REACT_DOMAIN_URL}${thumb[0]?.source}`} alt="thumbnail" />
-            <div className="absolute h-full w-full opacity-0 hover:opacity-100 backdrop-blur-sm flex justify-center items-center">
-              <button
-              //  onClick={() => onDeleteImage(asset)}
-              >
-                <img src="/assets/delete.svg" className='h-10 w-10' alt="" />
-              </button>
-            </div>
-          </div>}
-        <form className='w-full' onSubmit={thumb && thumb.length > 0 ? thumbnailUpdate : thumbnailUpload}>
-          <input type="file" onChange={(event) => setSelectedThumbnail(event.target.files)} />
-          <button type="submit" disabled={isLoading ? true : false} className={`border  ${isLoading ? 'bg-red-300 hover:bg-red-300 border-red-500' : 'hover:bg-indigo-500 border-blue-500'} rounded hover:text-white px-3 py-1`}>{isLoading ? 'Please wait' : 'Upload'}</button>
-        </form>
-      </div>
-      <p className='w-full py-2 flex-shrink-0 font-semibold text-lg'>Photos</p>
+      {currentType &&
+        <div className="">
+          <p className='font-semibold text-lg'>Thumbnail</p>
+          {thumb && thumb.length > 0 &&
+            <div className="p-1 border h-32 w-32 flex justify-center items-center relative">
+              <img className='max-h-full max-w-full' src={`${changedThumbnail ? changedThumbnail : `${import.meta.env.VITE_REACT_DOMAIN_URL}${thumb[0]?.source}`}`} alt="thumbnail" loading='lazy' />
+              <div className="absolute h-full w-full opacity-0 hover:opacity-100 backdrop-blur-sm flex justify-center items-center">
+                <button
+                  onClick={onDeleteThumbnail}
+                >
+                  <img src="/assets/delete.svg" className='h-10 w-10' alt="" />
+                </button>
+              </div>
+            </div>}
+          <form className='w-full' onSubmit={thumb && thumb.length > 0 ? thumbnailUpdate : thumbnailUpload}>
+            <input type="file" onChange={(event) => {
+              setSelectedThumbnail(event.target.files)
+              const file = event.target.files[0]
+              setTempThumb(URL.createObjectURL(file))
+            }
+            } />
+            <button type="submit" disabled={isLoading ? true : false} className={`border  ${isLoading ? 'bg-red-300 hover:bg-red-300 border-red-500' : 'hover:bg-indigo-500 border-blue-500'} rounded hover:text-white px-3 py-1`}>{isLoading ? 'Please wait' : 'Upload'}</button>
+          </form>
+        </div>
+      }
+      
       <div className="flex-grow flex justify-center">
         {createType ?
           <div className="border rounded p-3 max-w-sm self-center flex flex-col gap-5">
@@ -174,14 +206,15 @@ const Photography = () => {
               <button className='bg-green-700 hover:bg-green-800 text-stone-50 py-2 px-3 rounded' onClick={onTypeCreate}>Create</button>
             </div>
           </div> : <div className="w-full flex flex-col gap-2">
+            <p className='w-full py-2 flex-shrink-0 font-semibold text-lg'>Photos</p>
             <div className="flex gap-2 flex-wrap">
               {assets
                 && assets.length > 0 ? assets.map((asset, index) => (
                   <div key={index} className="p-1 border h-32 w-32 flex justify-center items-center relative">
-                    <img className='max-h-full max-w-full' src={`${import.meta.env.VITE_REACT_DOMAIN_URL}${asset.source}`} alt={asset.title} />
+                    <img className='max-h-full max-w-full' src={`${import.meta.env.VITE_REACT_DOMAIN_URL}${asset.source}`} alt={asset.title} loading='lazy' />
                     <div className="absolute h-full w-full opacity-0 hover:opacity-100 backdrop-blur-sm flex justify-center items-center">
                       <button onClick={() => onDeleteImage(asset)}>
-                        <img src="/assets/delete.svg" className='h-10 w-10' alt="" />
+                        <img src="/assets/delete.svg" className='h-10 w-10' alt="delete" />
                       </button>
                     </div>
                   </div>

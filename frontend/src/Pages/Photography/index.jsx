@@ -63,7 +63,7 @@ const Photography = () => {
               <Link to={`/photography/${item.name.toLocaleLowerCase()}`} className='w-full h-[75vh] max-h-96 flex justify-center'><img src={`${import.meta.env.VITE_REACT_DOMAIN_URL}/assets/${item?.name}/thumbnail.jpg`} alt={item.name} srcSet="" className='h-full w-full object-cover object-center' />
               </Link> 
               <div className="flex justify-between items-center font-semibold my-2">
-                <p className='text-lg'>{item.name}</p>
+                <p className='text-lg capitalize'>{item.name.split('_').join(' ')}</p>
                 {item.moto && <p className='hidden md:block'>{item.motto}</p>}
               </div>
             </div>

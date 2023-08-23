@@ -15,7 +15,7 @@ function Header({ open, setOpen }) {
     { name: "about", link: "/about" },
   ]
   return (
-    <div className="z-40 bg-primary text-white">
+    <div className="z-10 bg-primary text-white">
       <div className="max-w-[1440px] mx-auto px-3 lg:px-0 flex justify-between py-5">
         <div className="flex items-center cursor-pointer">
           {/* <p className="font-bold text-2xl">Logo</p> */}
@@ -27,7 +27,7 @@ function Header({ open, setOpen }) {
         <div
           className={`h-12 w-12 absolute top-3 right-5 flex flex-col justify-between items-center rounded cursor-pointer md:hidden border ${
             open ? "p-2" : "p-3"
-          } z-50`}
+          } z-20`}
           onClick={() => setOpen(!open)}
         >
           <div
@@ -51,7 +51,7 @@ function Header({ open, setOpen }) {
             open
               ? "opacity-100 top-[65px] bg-primary lg:bg-transparent h-[calc(100vh-65px)]"
               : "opacity-0 md:opacity-100 top-[65px] left-[-500px]"
-          } z-50`}
+          } z-20`}
         >
           {links.map((item, index) => (
             <div key={index}>
