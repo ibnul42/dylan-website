@@ -13,6 +13,8 @@ import Profile from "../Pages/Admin/Profile"
 import AdminPhotography from "../Pages/Admin/Photography"
 import Login from "../Pages/Login";
 import InProgress from "../Pages/InProgress";
+import ExternalLink from "../Pages/ExternalLink";
+import CreateLink from "../Pages/CreateLink";
 
 const adminLinks = [
   { titile: "Profile", path: "/admin/profile" },
@@ -86,6 +88,8 @@ const Layout = () => {
             <Route path="/admin/profile" element={<Profile />} />
             <Route path="/admin/photography" element={<AdminPhotography />} />
             <Route path="/admin/home" element={<AdminHome />} />
+            <Route path="/create-link" element={<CreateLink />} />
+            <Route path="/:link" element={<ExternalLink />} />
             <Route path="*" element={<Home />} />
           </Routes>
         </div>
