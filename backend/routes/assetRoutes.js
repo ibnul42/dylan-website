@@ -45,11 +45,14 @@ router.get("/:dir/:name", getImage)
 router.delete("/rmdir/:dir", protect, removeDir)
 router.delete("/rmFile/:dir/:file", protect, removeAsset)
 router.delete("/rmThumb/:dir", protect, removeThumb)
-router.post("/upload/:assetDir", protect, upload.array("photos", 12), addImages)
+router.post(
+  "/upload/:assetDir",
+  protect,
+  // checkRug,
+  upload.array("photos", 12), 
+  addImages
+)
 router.post("/upload/thumbnail/:assetDir", protect, uploadSingle.single('thumbnail'), thumbnailImage)
 router.put("/upload/thumbnail/:assetDir/:id", protect, uploadSingle.single('thumbnail'), updateThumbnailImage)
-// router.post('/login', LoginUser)
-// router.get('/me', protect, getMe)
-// router.post('/me/update', protect, updateProfile)
 
 module.exports = router

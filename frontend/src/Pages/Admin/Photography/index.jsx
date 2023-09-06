@@ -18,6 +18,7 @@ const Photography = () => {
 
   const [typeText, setTypeText] = useState('')
   const [createType, setCreateType] = useState(false)
+  const [year, setYear] = useState('')
 
 
   useEffect(() => {
@@ -54,6 +55,7 @@ const Photography = () => {
   }, [folders[0]?.name, isFolderCreated, isError, isAssetAdded, isAssetDeleted, isFolderDeleted, thumbnailChange])
 
   const onTypeChange = (item) => {
+    setYear('')
     setCurrentType(item.name)
     dispatch(getImages(item.name))
   }
@@ -76,9 +78,10 @@ const Photography = () => {
 
     // Append each selected file to the FormData object
     for (let i = 0; i < selectedFiles.length; i++) {
-      formData.append(`photos`, selectedFiles[i]);
+      formData.append(`photos`, selectedFiles[i])
+      formData.append('year', year)
     }
-    dispatch(addAssets({ currentType, formData }))
+    dispatch(addAssets({ currentType, formData, year }))
   }
 
   const onDeleteImage = (item) => {
@@ -195,7 +198,7 @@ const Photography = () => {
           </form>
         </div>
       }
-      
+
       <div className="flex-grow flex justify-center">
         {createType ?
           <div className="border rounded p-3 max-w-sm self-center flex flex-col gap-5">
@@ -227,6 +230,7 @@ const Photography = () => {
             {folders.length > 0 &&
               <form className='w-full' onSubmit={handleSubmit}>
                 <input type="file" multiple onChange={(event) => setSelectedFiles(event.target.files)} />
+                {currentType === 'rug_making' && <input type="text" value={year} onChange={(e) => setYear(e.target.value)} className='border focus:outline-0 px-2 py-1 w-20 mx-5 rounded' placeholder='Year' />}
                 <button type="submit" disabled={isLoading ? true : false} className={`border  ${isLoading ? 'bg-red-300 hover:bg-red-300 border-red-500' : 'hover:bg-indigo-500 border-blue-500'} rounded hover:text-white px-3 py-1`}>{isLoading ? 'Please wait' : 'Upload'}</button>
               </form>
             }

@@ -18,6 +18,9 @@ const assetSchema = mongoose.Schema({
         type: String,
         required: [true, 'Invalid source']
     },
+    year:{
+        type: String
+    },
 }, {
     timestams: true
 })

@@ -18,21 +18,11 @@ const createLink = asyncHandler(async (req, res) => {
         throw new Error('Link already Exist!')
     }
 
-    // generate a random id
-    // let shortenLink = generateID()
-    // let unique = false
-
-    // create an unique random id
-    // while (!unique) {
-    const idExists = await Link.findOne({ shortenLink: uniqueId })
+    const idExists = await Link.findOne({ shortenLink: `https://dluper.net/${uniqueId}` })
     if (idExists) {
         res.status(404)
         throw new Error('Name already Exist!')
     }
-    // else {
-    //     unique = true
-    // }
-    // }
 
     // create a new user
     const createdLink = await Link.create({

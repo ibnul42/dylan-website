@@ -82,6 +82,8 @@ const addAssets = async ({ currentType, formData }) => {
   } catch (error) {
     if (error.response.status === 400) {
       throw new Error(error.response.data.msg)
+    } else if (error.response.status === 404) {
+      throw new Error(error.response.data.message)
     } else {
       throw new Error("An error occurred while getting assets")
     }

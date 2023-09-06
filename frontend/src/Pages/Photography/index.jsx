@@ -5,30 +5,6 @@ import { Link } from 'react-router-dom'
 import { getAssets, getFolders } from '../../features/asset/assetSlice'
 import config from '../../../config'
 
-
-const listGroup = [
-  {
-    title: 'People',
-    motto: 'Human Beings',
-    link: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80'
-  },
-  {
-    title: 'Industrial',
-    motto: 'Take me on the concrete jungle',
-    link: 'https://images.unsplash.com/photo-1542274368-443d694d79aa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80'
-  },
-  {
-    title: 'Concert',
-    motto: 'Long hair absense of chair',
-    link: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
-  },
-  {
-    title: 'Landscape',
-    motto: 'The beauty of nature',
-    link: 'https://images.unsplash.com/photo-1434725039720-aaad6dd32dfe?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1042&q=80'
-  }
-]
-
 const Photography = () => {
   const dispatch = useDispatch()
 
@@ -38,11 +14,12 @@ const Photography = () => {
 
   useEffect(() => {
     if (folders.length > 0 && assets.length > 0) {
+      const folderFiltered = folders.filter(item => item.name !== 'rug_making')
       let types = [];
-      for (let i = 0; i < folders.length; i++) {
-        const targetAssets = assets.filter((asset) => asset.type === folders[i].name);
+      for (let i = 0; i < folderFiltered.length; i++) {
+        const targetAssets = assets.filter((asset) => asset.type === folderFiltered[i].name);
         const source = targetAssets.length > 0 ? targetAssets[0].source : null;
-        types.push({ ...folders[i], source });
+        types.push({ ...folderFiltered[i], source });
       }
       setAlltypes(types);
     } else {

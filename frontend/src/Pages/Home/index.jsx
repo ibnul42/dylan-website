@@ -36,7 +36,7 @@ const Home = () => {
             <p className='my-2 text-center'>Photography</p>
           </div>
           <div className="col-span-1 rounded-md overflow-hidden flex flex-col items-center">
-            <Link to="/in-progress"><img src="/assets/rug.png" alt="" srcSet="" className='w-full h-[60vh] max-h-[450px] object-cover object-left' /></Link>
+            <Link to="/photography/rug_making"><img src={`${import.meta.env.VITE_REACT_DOMAIN_URL}/assets/rug_making/thumbnail.jpg`} alt="" srcSet="" className='w-full h-[60vh] max-h-[450px] object-cover object-left' /></Link>
             <p className='my-2 text-center'>Rug-Making / Tufting</p>
           </div>
         </div>

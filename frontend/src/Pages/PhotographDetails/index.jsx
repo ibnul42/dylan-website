@@ -36,13 +36,18 @@ const PhotographDetails = () => {
                 <title>{type.charAt(0).toUpperCase().concat(type.slice(1))} - Dylan Luper</title>
                 <link rel="canonical" href="https://www.dylanluper.com/photography" />
             </Helmet>
-            <div className={`max-w-[1440px] mx-auto px-2 gap-5 columns-1 ${assets.length > 0 ? 'md:columns-3' : ''}`}>
+            <div className={`max-w-[1440px] mx-auto px-2 gap-5 ${type === 'rug_making' ? 'grid grid-cols-1 md:grid-cols-3' : 'columns-1'} ${assets.length > 0 ? 'md:columns-3' : ''}`}>
                 {assets && assets.length > 0 && assets.map((item) => (
                     <div key={item.title} className='py-5'>
                         <img
                             onClick={() => openModal(item)}
                             src={`${import.meta.env.VITE_REACT_DOMAIN_URL}${item.source}`}
                             className="w-full h-auto rounded-md object-cover cursor-pointer" alt={item.title} loading='lazy' />
+                        {type === 'rug_making' &&
+                            <div className="flex justify-between py-2">
+                                <p>{item.source.split('/').pop().split('.')[0]}</p>
+                                <p>{item.year}</p>
+                            </div>}
                     </div>
                 ))}
                 {assets && assets.length < 1 && <p className='py-20 text-center'>No image Found</p>}

@@ -79,18 +79,37 @@ const removeAsset = asyncHandler(async (req, res) => {
 })
 
 const addImages = asyncHandler(async (req, res) => {
-  const assetDir = req.params.assetDir;
-  const compressedImages = [];
+  const { assetDir } = req.params
+  const compressedImages = []
+  const { year } = req.body
+
+  const yearMod = typeof year === 'object' ? year[0] : year
+
+  if (assetDir === 'rug_making') {
+    if (!year || !/^\d{4}$/.test(yearMod)) {
+      res.status(404);
+      throw new Error('Please input a valid four-digit year for rug making.');
+    }
+  }
 
   for (const file of req.files) {
     const compressedImagePath = await compressImage(assetDir, file);
     compressedImages.push(compressedImagePath);
 
-    Asset.create({
-      title: file.originalname,
-      type: assetDir,
-      source: `/assets/${assetDir}/${file.originalname}`,
-    });
+    if (assetDir === 'rug_making') {
+      Asset.create({
+        title: file.originalname,
+        type: assetDir,
+        year: yearMod,
+        source: `/assets/${assetDir}/${file.originalname}`,
+      })
+    } else {
+      Asset.create({
+        title: file.originalname,
+        type: assetDir,
+        source: `/assets/${assetDir}/${file.originalname}`,
+      })
+    }
   }
 
   res.status(200).json({ msg: "uploaded files successfully" });
