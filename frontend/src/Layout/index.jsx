@@ -15,10 +15,13 @@ import Login from "../Pages/Login";
 import InProgress from "../Pages/InProgress";
 import ExternalLink from "../Pages/ExternalLink";
 import CreateLink from "../Pages/CreateLink";
+import ShareInfo from "../Pages/ShareInfo";
+import ProtectedRoute from "./ProtectedRoute";
 
 const adminLinks = [
   { titile: "Profile", path: "/admin/profile" },
-  { titile: "Photography", path: "/admin/photography" }
+  { titile: "Photography", path: "/admin/photography" },
+  { titile: "Link", path: "/admin/create-link" }
 ]
 
 const Layout = () => {
@@ -83,13 +86,14 @@ const Layout = () => {
             <Route path="/in-progress" element={<InProgress />} />
             <Route path="/photography" element={<Photography />} />
             <Route path="/about" element={<About />} />
+            <Route path="/shareinfo" element={<ShareInfo />} />
             <Route path="/photography/:type" element={<PhotographDetails />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/admin/profile" element={<Profile />} />
-            <Route path="/admin/photography" element={<AdminPhotography />} />
-            <Route path="/admin/home" element={<AdminHome />} />
-            <Route path="/create-link" element={<CreateLink />} />
-            <Route path="/:link" element={<ExternalLink />} />
+            <Route path="/admin/profile" element={<ProtectedRoute ><Profile /> </ProtectedRoute>} />
+            <Route path="/admin/photography" element={<ProtectedRoute ><AdminPhotography /></ProtectedRoute >} />
+            <Route path="/admin/home" element={<ProtectedRoute ><AdminHome /></ProtectedRoute >} />
+            <Route path="/admin/create-link" element={<ProtectedRoute ><CreateLink /></ProtectedRoute >} />
+            <Route path="/:link" element={<ProtectedRoute ><ExternalLink /></ProtectedRoute >} />
             <Route path="*" element={<Home />} />
           </Routes>
         </div>

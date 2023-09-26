@@ -30,10 +30,26 @@ const update = async (userData) => {
     return response.data
 }
 
+// get user 
+const getUser = async () => {
+    const token = JSON.parse(localStorage.getItem('user'))['token']
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    try {
+        const response = await axios.get(API_URL + 'me', config)
+        return response.data
+    } catch (error) {
+        localStorage.removeItem('user')
+        return null
+    }
+}
+
 const authService = {
     login,
     logout,
-    update
+    update,
+    getUser
 }
 
 export default authService

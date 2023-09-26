@@ -12,7 +12,7 @@ function Header({ open, setOpen }) {
   const links = [
     { name: "home", link: "/" },
     { name: "photography", link: "/photography" },
-    { name: "Shorten Link", link: "/create-link" },
+    { name: "Social", link: "/shareinfo" },
     { name: "about", link: "/about" },
   ]
   return (

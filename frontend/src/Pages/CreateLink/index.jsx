@@ -41,9 +41,9 @@ const CreateLink = () => {
             </Helmet>
             <div className="max-w-7xl mx-auto px-2 py-10 space-y-2">
                 <form onSubmit={submitHandler} className='flex flex-col gap-3 justify-center'>
-                    <input type="text" value={originalLink} onChange={(e) => setOriginalLink(e.target.value)} name="" id="" placeholder='Enter your link' className='w-72 self-center px-3 py-2 rounded-full text-black focus:outline-0' />
-                    <input type="text" value={uniqueId} onChange={(e) => setUniqueId(e.target.value)} name="" id="" placeholder='Enter name' className='w-72 self-center px-3 py-2 rounded-full text-black focus:outline-0' />
-                    <button type="submit" className='py-2 px-4 border min-w-max rounded-md hover:bg-gray-800 self-center'>Create Link</button>
+                    <input type="text" value={originalLink} onChange={(e) => setOriginalLink(e.target.value)} name="" id="" placeholder='Enter your link' className='w-72 self-center px-3 py-2 rounded-full text-black focus:outline-0 border' />
+                    <input type="text" value={uniqueId} onChange={(e) => setUniqueId(e.target.value)} name="" id="" placeholder='Enter name' className='w-72 self-center px-3 py-2 rounded-full text-black focus:outline-0 border' />
+                    <button type="submit" className='py-2 px-4 border min-w-max rounded-md hover:bg-gray-100 self-center'>Create Link</button>
                 </form>
                 <div className="py-5">
                     <p className='font-semibold text-xl underline underline-offset-4'>Shortened Links:</p>

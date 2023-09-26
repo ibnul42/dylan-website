@@ -3,8 +3,12 @@ import axios from "axios"
 const API_URL = `${import.meta.env.VITE_REACT_DOMAIN_URL}`
 
 const createLink = async (data) => {
+    const token = JSON.parse(localStorage.getItem('user'))['token']
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
     try {
-        const response = await axios.post(`${API_URL}/link`, data)
+        const response = await axios.post(`${API_URL}/link`, data, config)
         return response.data
     } catch (error) {
         if (error.response.status === 404) {

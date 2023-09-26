@@ -3,15 +3,27 @@ import authService from './authService'
 // get user from local storage
 const user = JSON.parse(localStorage.getItem('user'))
 
+// const userData = authService.getUser()
+
 const initialState = {
-    user: user ? user : null,
+    user: null,
     isLoading: false,
     isError: false,
     isSuccess: false,
-    isLoggedIn: false,
-    isLoggedOut: true,
+    isLoggedIn: null,
     message: ''
 }
+
+// update user
+export const getUser = createAsyncThunk('auth/get-user', async(_, thunkAPI) => {
+    try {
+        return await authService.getUser()
+    } catch (error) {
+        const message = error.response && error.response.data && error.response.data.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 
 // login user
 export const login = createAsyncThunk('auth/login', async(user, thunkAPI) => {
@@ -83,6 +95,21 @@ export const authSlice = createSlice({
             .addCase(update.rejected, (state, action) => {
                  state.isLoading = false
                  state.isError = true
+                 state.message = action.payload
+            })
+            .addCase(getUser.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getUser.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.isLoggedIn = true
+                state.user = action.payload
+            })
+            .addCase(getUser.rejected, (state, action) => {
+                 state.isLoading = false
+                 state.isError = true
+                 state.isLoggedIn = false
                  state.message = action.payload
             })
     }
