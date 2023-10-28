@@ -14,9 +14,10 @@ import AdminPhotography from "../Pages/Admin/Photography"
 import Login from "../Pages/Login";
 import InProgress from "../Pages/InProgress";
 import ExternalLink from "../Pages/ExternalLink";
-import CreateLink from "../Pages/CreateLink";
+import CreateLink from "../Pages/Admin/Link/CreateLink";
 import ShareInfo from "../Pages/ShareInfo";
 import ProtectedRoute from "./ProtectedRoute";
+import EditLink from "../Pages/Admin/Link/EditLink";
 
 const adminLinks = [
   { titile: "Profile", path: "/admin/profile" },
@@ -93,7 +94,8 @@ const Layout = () => {
             <Route path="/admin/photography" element={<ProtectedRoute ><AdminPhotography /></ProtectedRoute >} />
             <Route path="/admin/home" element={<ProtectedRoute ><AdminHome /></ProtectedRoute >} />
             <Route path="/admin/create-link" element={<ProtectedRoute ><CreateLink /></ProtectedRoute >} />
-            <Route path="/:link" element={<ProtectedRoute ><ExternalLink /></ProtectedRoute >} />
+            <Route path="/admin/edit-link/:id" element={<ProtectedRoute ><EditLink /></ProtectedRoute >} />
+            <Route path="/:link" element={<ExternalLink />} />
             <Route path="*" element={<Home />} />
           </Routes>
         </div>

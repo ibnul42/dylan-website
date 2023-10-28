@@ -1,23 +1,52 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { Link, NavLink } from 'react-router-dom';
+import Popup from '../../components/Popup';
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllLink } from '../../features/link/linkSlice';
 
 const ShareInfo = () => {
+  const dispatch = useDispatch()
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const [currentItem, setCurrentItem] = useState(null)
+
+  const { links } = useSelector((state) => state.link)
+
+  useEffect(() => {
+    dispatch(getAllLink())
+  }, [])
+
+  const onClose = () => {
+    setCurrentItem(null)
+    setIsPopupOpen(false)
+  }
+
+  const buttonClickHandler = (item) => {
+    setCurrentItem(item)
+    setIsPopupOpen(true)
+  }
+
+
+
   return (
     <div className='flex-1 my-2'>
       <Helmet>
         <title>Share Information - Dylan Luper</title>
         <link rel="canonical" href="https://www.dylanluper.com/shareinfo" />
       </Helmet>
-      <div className="max-w-[1440px] mx-auto px-2 grid grid-cols-1 md:grid-cols-2 gap-3">
-        <div className="col-span-1 flex flex-col gap-3 justify-center items-center">
-          <p className='text-2xl md:text-4xl font-semibold'>What's Up!</p>
-          <p className='max-w-md font-semibold text-gray-500 text-center'>I am a independent photographer/ videographer currently based out of Winston-Salem, NC.</p>
-        </div>
-        <div className="col-span-1 flex justify-center">
-          <img src="/assets/about.jpg" alt="profile" className='md:max-h-[calc(100vh-200px)] object-cover object-top rounded-lg' />
-        </div>
+      <div className="max-w-[1440px] mx-auto px-2 flex flex-col justify-center items-center gap-3">
+        {links && links.length > 0 && links.map((item, index) => (
+          <div className="hoveranim bg-white w-full max-w-3xl rounded-md shadow-lg text-black px-2 py-1 flex justify-between items-center">
+            <NavLink to="/" className="text-xl font-bold">
+              <img src="/assets/logo.png" className="w-8 h-8" alt="Logo" />
+            </NavLink>
+            <Link to={`${item.originalLink}`} target='_blank'>{item.displayName}</Link>
+            <button onClick={() => buttonClickHandler(item)}>...</button>
+          </div>
+        ))}
       </div>
-    </div>
+      {isPopupOpen && <Popup currentItem={currentItem}  onClose={onClose} />}
+    </div >
   )
 }
 

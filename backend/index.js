@@ -38,17 +38,17 @@ const fs = require("fs")
 // })
 
 // server frontend
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(__dirname, "../frontend/dist")))
-//   app.use(express.static('/'))
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")))
+  app.use(express.static('/'))
 
-//   app.use((req, res) =>
-//     res.sendFile(path.join(__dirname, "../", "frontend", "dist", "index.html"))
+  app.use((req, res) =>
+    res.sendFile(path.join(__dirname, "../", "frontend", "dist", "index.html"))
 
-//   )
-// } else {
-//   app.get("/", (req, res) => res.send("please setup production server before"))
-// }
+  )
+} else {
+  app.get("/", (req, res) => res.send("please setup production server before"))
+}
 
 app.use(errorHandler)
 

@@ -6,6 +6,10 @@ const shortenSchema = mongoose.Schema(
             type: String,
             required: [true, "Please enter a link"],
         },
+        displayName: {
+            type: String,
+            required: [true, "Please enter a link"],
+        },
         shortenLink: {
             type: String,
             required: [true, "Please enter a link"],

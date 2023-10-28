@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getLink, reset } from '../../features/link/linkSlice'
+import { getLinkByName, reset } from '../../features/link/linkSlice'
 import { toast } from 'react-toastify'
 
 const ExternalLink = () => {
@@ -17,9 +17,9 @@ const ExternalLink = () => {
             dispatch(reset())
             navigate('/')
         } else if (isLinkGet) {
-            window.location.href = linkdata
+            window.location.href = linkdata.originalLink
         } else {
-            dispatch(getLink(link))
+            dispatch(getLinkByName(link))
         }
     }, [dispatch, isError, message, isLinkGet])
     return (
