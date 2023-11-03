@@ -2,12 +2,18 @@ const asyncHandler = require('express-async-handler')
 const Link = require('../models/shortenModal')
 
 const createLink = asyncHandler(async (req, res) => {
-    const { originalLink, uniqueId, displayName } = req.body
+    const { originalLink, uniqueId, displayName, order } = req.body
 
     // check if all fields are inputed
     if (!originalLink || !uniqueId || !displayName) {
         res.status(404)
         throw new Error('Please enter all fields')
+    }
+
+    let newOrder = 0
+    if (typeof order !== Number) {
+        const allLinks = await Link.find()
+        newOrder = allLinks.length + 1
     }
 
     const linkExists = await Link.findOne({ originalLink })
@@ -28,7 +34,8 @@ const createLink = asyncHandler(async (req, res) => {
     const createdLink = await Link.create({
         originalLink,
         displayName,
-        shortenLink: `${process.env.URL}/${uniqueId}`
+        shortenLink: `${process.env.URL}/${uniqueId}`,
+        order: newOrder > 0 ? newOrder : order
     })
 
     if (createdLink) {
@@ -41,7 +48,7 @@ const createLink = asyncHandler(async (req, res) => {
 })
 
 const editLink = asyncHandler(async (req, res) => {
-    const { originalLink, uniqueId, displayName } = req.body
+    const { originalLink, uniqueId, displayName, order } = req.body
     const { id } = req.params
 
     if (id.length !== 24) {
@@ -60,6 +67,14 @@ const editLink = asyncHandler(async (req, res) => {
         res.status(404)
         throw new Error('Please enter all fields')
     }
+
+    // console.log(order)
+    // let newOrder = 0
+    // if (typeof order !== Number) {
+    //     console.log(typeof order)
+    //     const allLinks = await Link.find()
+    //     newOrder = allLinks.length + 1
+    // }
 
     if (idExists.originalLink !== originalLink) {
         const linkExists = await Link.findOne({ originalLink })
@@ -83,7 +98,8 @@ const editLink = asyncHandler(async (req, res) => {
     const editLink = await Link.findByIdAndUpdate(id, {
         originalLink,
         displayName,
-        shortenLink: `${process.env.URL}/${uniqueId}`
+        shortenLink: `${process.env.URL}/${uniqueId}`,
+        order
     })
 
     if (editLink) {
@@ -132,11 +148,9 @@ const getLinkByName = asyncHandler(async (req, res) => {
 })
 
 const getAllLinks = asyncHandler(async (req, res) => {
-
     const links = await Link.find()
-
     res.status(200)
-    res.json(links.reverse())
+    res.json(links.sort((a, b) => a.order - b.order))
 })
 const deleteLink = asyncHandler(async (req, res) => {
 

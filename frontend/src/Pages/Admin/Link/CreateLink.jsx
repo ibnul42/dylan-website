@@ -11,8 +11,9 @@ const CreateLink = () => {
     const [uniqueId, setUniqueId] = useState('')
     const [displayName, setDisplayName] = useState('')
     const [convertedLinks, setConvertedLinks] = useState([])
+    const [order, setOrder] = useState(null)
 
-    const { isLinkCreated, linkdata, message, isError, links,isLinkDeleted } = useSelector((state) => state.link)
+    const { isLinkCreated, linkdata, message, isError, links, isLinkDeleted } = useSelector((state) => state.link)
 
     useEffect(() => {
         if (isLinkCreated) {
@@ -25,26 +26,34 @@ const CreateLink = () => {
         } else if (isError) {
             toast.error(message)
             dispatch(reset())
-        } else if(isLinkDeleted) {
+        } else if (isLinkDeleted) {
             toast.success(message)
             dispatch(reset())
         } else {
             dispatch(getAllLink())
         }
-    }, [dispatch, isLinkCreated, linkdata, message, isError,isLinkDeleted])
+    }, [dispatch, isLinkCreated, linkdata, message, isError, isLinkDeleted])
 
     const submitHandler = (e) => {
         e.preventDefault()
         const data = {
             originalLink,
             uniqueId,
-            displayName
+            displayName,
+            order
         }
         dispatch(createLink(data))
     }
 
-    const deleteItem =(item) => {
+    const deleteItem = (item) => {
         dispatch(deleteLink(item._id))
+    }
+
+    const changeOrder = (e) => {
+        const data = e.target.value;
+        if (data >= 1) {
+            setOrder(data)
+        }
     }
 
     return (
@@ -58,6 +67,7 @@ const CreateLink = () => {
                     <input type="text" value={originalLink} onChange={(e) => setOriginalLink(e.target.value)} name="" id="" placeholder='Enter your link' className='w-72 self-center px-3 py-2 rounded-full text-black focus:outline-0 border' />
                     <input type="text" value={uniqueId} onChange={(e) => setUniqueId(e.target.value)} name="" id="" placeholder='Enter name' className='w-72 self-center px-3 py-2 rounded-full text-black focus:outline-0 border' />
                     <input type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} name="" id="" placeholder='Enter display name' className='w-72 self-center px-3 py-2 rounded-full text-black focus:outline-0 border' />
+                    <input type="number" value={order} onChange={changeOrder} name={order} id={order} placeholder='Enter Order' className='w-72 self-center px-3 py-2 rounded-full text-black focus:outline-0 border' />
                     <button type="submit" className='py-2 px-4 border min-w-max rounded-md hover:bg-gray-100 self-center'>Create Link</button>
                 </form>
                 <div className="py-5">
@@ -74,7 +84,10 @@ const CreateLink = () => {
                                     <th className="px-4 py-2 col-span-3 border-r">
                                         Display Name
                                     </th>
-                                    <th className="px-4 py-2 col-span-4 border-r">
+                                    <th className="px-4 py-2 col-span-1 border-r">
+                                        Order
+                                    </th>
+                                    <th className="px-4 py-2 col-span-3 border-r">
                                         Original Link
                                     </th>
                                     <th className="px-4 py-2 col-span-3 border-r">
@@ -90,7 +103,10 @@ const CreateLink = () => {
                                             <td className="px-4 py-2 col-span-3 border-r border-primary flex items-center justify-center">
                                                 <p>{item.displayName}</p>
                                             </td>
-                                            <td className="px-4 py-2 col-span-4 border-r border-primary flex items-center justify-center max-h-44 overflow-y-auto">
+                                            <td className="px-4 py-2 col-span-1 border-r border-primary flex items-center justify-center max-h-44 overflow-y-auto">
+                                                <Link to={item?.order} target='_blank' className='hover:underline'>{item?.order}</Link>
+                                            </td>
+                                            <td className="px-4 py-2 col-span-3 border-r border-primary flex items-center justify-center max-h-44 overflow-y-auto">
                                                 <Link to={item.originalLink} target='_blank' className='hover:underline'>{item.originalLink}</Link>
                                             </td>
                                             <td className="px-4 py-2 col-span-3 border-r border-primary flex items-center justify-center max-h-44 overflow-y-auto">

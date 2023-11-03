@@ -14,6 +14,10 @@ const shortenSchema = mongoose.Schema(
             type: String,
             required: [true, "Please enter a link"],
         },
+        order: {
+            type: Number,
+            required: [false]
+        }
     },
     {
         timestams: true,

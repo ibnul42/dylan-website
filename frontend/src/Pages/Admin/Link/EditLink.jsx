@@ -12,6 +12,7 @@ const EditLink = () => {
     const [originalLink, setOriginalLink] = useState('')
     const [uniqueId, setUniqueId] = useState('')
     const [displayName, setDisplayName] = useState('')
+    const [order, setOrder] = useState(null)
 
     const { isLinkCreated, linkdata, message, isError, isLinkGet, isLinkEdited } = useSelector((state) => state.link)
 
@@ -25,6 +26,7 @@ const EditLink = () => {
                 setDisplayName(linkdata.displayName)
                 setOriginalLink(linkdata.originalLink)
                 setUniqueId(linkdata.shortenLink.split('/').pop())
+                setOrder(Number(linkdata.order))
                 dispatch(reset())
             }
         } else if (isLinkEdited) {
@@ -44,9 +46,17 @@ const EditLink = () => {
         const data = {
             originalLink,
             uniqueId,
-            displayName
+            displayName,
+            order
         }
         dispatch(editLink({ id, data }))
+    }
+
+    const changeOrder = (e) => {
+        const data = e.target.value;
+        if (data >= 1) {
+            setOrder(Number(data))
+        }
     }
 
     return (
@@ -60,6 +70,7 @@ const EditLink = () => {
                     <input type="text" value={originalLink} onChange={(e) => setOriginalLink(e.target.value)} name="" id="" placeholder='Enter your link' className='w-72 self-center px-3 py-2 rounded-full text-black focus:outline-0 border' />
                     <input type="text" value={uniqueId} onChange={(e) => setUniqueId(e.target.value)} name="" id="" placeholder='Enter name' className='w-72 self-center px-3 py-2 rounded-full text-black focus:outline-0 border' />
                     <input type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} name="" id="" placeholder='Enter display name' className='w-72 self-center px-3 py-2 rounded-full text-black focus:outline-0 border' />
+                    <input type="number" value={order} onChange={changeOrder} name={order} id={order} placeholder='Enter Order' className='w-72 self-center px-3 py-2 rounded-full text-black focus:outline-0 border' />
                     <button type="submit" className='py-2 px-4 border min-w-max rounded-md hover:bg-gray-100 self-center'>Update Link</button>
                 </form>
             </div>
